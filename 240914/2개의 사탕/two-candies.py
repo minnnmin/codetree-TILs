@@ -26,6 +26,7 @@ def dfs(now_matrix, ex_directions, cnt, RED, BLUE):
         return
     if RED == EXIT and BLUE != EXIT and cnt <= 10:
         min_cnt = min(min_cnt, cnt)
+        print('답:', RED, BLUE, EXIT, ex_directions, cnt)
         return
     
     if ex_directions[-1] == 'L':
@@ -237,7 +238,7 @@ def make_new_matrix(now_matrix, direction, RED, BLUE):
                         break
                     else:
                         break
-                for _ in range(M-3):
+                for _ in range(N-3):
                     if now_matrix[BLUE[0] - 1][BLUE[1]] == '.':
                         now_matrix[BLUE[0] - 1][BLUE[1]] = 'B'
                         now_matrix[BLUE[0]][BLUE[1]] = '.'
@@ -249,7 +250,7 @@ def make_new_matrix(now_matrix, direction, RED, BLUE):
                     else:
                         break
             else:
-                for _ in range(M-3):
+                for _ in range(N-3):
                     if now_matrix[BLUE[0] - 1][BLUE[1]] == '.':
                         now_matrix[BLUE[0] - 1][BLUE[1]] = 'B'
                         now_matrix[BLUE[0]][BLUE[1]] = '.'
@@ -272,7 +273,7 @@ def make_new_matrix(now_matrix, direction, RED, BLUE):
                     else:
                         break
         else: # 아무거나 먼저 해
-            for _ in range(M-3):
+            for _ in range(N-3):
                 if now_matrix[RED[0] - 1][RED[1]] == '.':
                     now_matrix[RED[0] - 1][RED[1]] = 'R'
                     now_matrix[RED[0]][RED[1]] = '.'
@@ -283,7 +284,7 @@ def make_new_matrix(now_matrix, direction, RED, BLUE):
                     break
                 else:
                     break
-            for _ in range(M-3):
+            for _ in range(N-3):
                 if now_matrix[BLUE[0] - 1][BLUE[1]] == '.':
                     now_matrix[BLUE[0] - 1][BLUE[1]] = 'B'
                     now_matrix[BLUE[0]][BLUE[1]] = '.'
@@ -299,7 +300,7 @@ def make_new_matrix(now_matrix, direction, RED, BLUE):
     elif direction == 'D':
         if RED[1] == BLUE[1]:
             if RED[0] < BLUE[0]:
-                for _ in range(M-3):
+                for _ in range(N-3):
                     if now_matrix[BLUE[0] + 1][BLUE[1]] == '.':
                         now_matrix[BLUE[0] + 1][BLUE[1]] = 'B'
                         now_matrix[BLUE[0]][BLUE[1]] = '.'
@@ -333,7 +334,7 @@ def make_new_matrix(now_matrix, direction, RED, BLUE):
                         break
                     else:
                         break
-                for _ in range(M-3):
+                for _ in range(N-3):
                     if now_matrix[BLUE[0] + 1][BLUE[1]] == '.':
                         now_matrix[BLUE[0] + 1][BLUE[1]] = 'B'
                         now_matrix[BLUE[0]][BLUE[1]] = '.'
@@ -356,7 +357,7 @@ def make_new_matrix(now_matrix, direction, RED, BLUE):
                     break
                 else:
                     break
-            for _ in range(M-3):
+            for _ in range(N-3):
                 if now_matrix[BLUE[0] + 1][BLUE[1]] == '.':
                     now_matrix[BLUE[0] + 1][BLUE[1]] = 'B'
                     now_matrix[BLUE[0]][BLUE[1]] = '.'
