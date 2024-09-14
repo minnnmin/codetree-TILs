@@ -7,6 +7,9 @@ for customer in restaurants:
     customer -= LDR
     answer += 1
     if customer > 0:
-        answer += customer // MBR + 1
+        if customer % MBR == 0:
+            answer += customer // MBR
+        else:
+            answer += customer // MBR + 1
 
 print(answer)
