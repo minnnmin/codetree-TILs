@@ -26,7 +26,6 @@ def dfs(now_matrix, ex_directions, cnt, RED, BLUE):
         return
     if RED == EXIT and BLUE != EXIT and cnt <= 10:
         min_cnt = min(min_cnt, cnt)
-        print('답:', RED, BLUE, EXIT, ex_directions, cnt)
         return
     
     if ex_directions[-1] == 'L':
