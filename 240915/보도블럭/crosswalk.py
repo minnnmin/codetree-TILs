@@ -24,7 +24,7 @@ def check_blocks(blocks): # 행 검사
 
     for b in blocks:
         ex = -1
-        cont_block_cnt = 1 # 연속된 동일한 높이 블럭 길이
+        cont_block_cnt = 1 # 연속된 동일한 높이 블럭 길이 (경사로 없는)
         will_cont_block_cnt = 0 # 현재까지 연속된 동일 블럭 개수(내리막에 사용)
         down = False
         visited = [False] * N
@@ -34,6 +34,8 @@ def check_blocks(blocks): # 행 검사
             else:
                 if down:
                     if will_cont_block_cnt == L: # 경사로 설치 가능
+                        if b[i] != ex:
+                            break
                         visited[i - 1] = True
                         down = False
                         cont_block_cnt += 1
@@ -41,8 +43,10 @@ def check_blocks(blocks): # 행 검사
                 if b[i] == ex:
                     if down:
                         will_cont_block_cnt += 1
-                        visited[i] = True
                         if will_cont_block_cnt == L: # 경사로 설치 가능
+                            will_cont_block_cnt = 0
+                            cont_block_cnt = 0
+                            visited[i] = True
                             down = False
                     else:
                         cont_block_cnt += 1
@@ -65,9 +69,12 @@ def check_blocks(blocks): # 행 검사
             if i == N-1:
                 if not down:
                     available += 1
+                    # print('1.', b)
                 else:
                     if will_cont_block_cnt == L:
                         available += 1
+                        # print('2.', b)
+
     return available
 
 print(check_blocks(original_blocks) + check_blocks(new_blocks))
