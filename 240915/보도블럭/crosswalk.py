@@ -34,8 +34,8 @@ def check_blocks(blocks): # 행 검사
             else:
                 if down:
                     if will_cont_block_cnt == L: # 경사로 설치 가능
-                        if b[i] != ex:
-                            break
+                        # if b[i] != ex:
+                        #     break
                         visited[i - 1] = True
                         down = False
                         cont_block_cnt += 1
@@ -59,6 +59,7 @@ def check_blocks(blocks): # 행 검사
                         if cont_block_cnt >= L and not visited[i - 1]: # 가능
                             ex = b[i]
                             cont_block_cnt = 1
+                            visited[i - 1] = True
                         else:
                             break
                     elif ex - b[i] == 1: # 내리막 # 경사로 놓을 수 있는지 확인해야 하므로 플래그 설정
