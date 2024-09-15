@@ -68,8 +68,6 @@ def check_blocks(blocks): # 행 검사
                 else:
                     if will_cont_block_cnt == L:
                         available += 1
-                        print('2.', b)
-                    
     return available
 
 print(check_blocks(original_blocks) + check_blocks(new_blocks))
