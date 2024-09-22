@@ -6,12 +6,10 @@ for i in range(N):
 max_profit = 0
 visited = [False] * (N+1)
 
-# job_start_day: 새 작업 시작 가능일
-# job_end_day: 이전 작업 종료일
-def func(job_start_day, job_end_day, sum_profit):
+def func(job_start_day, sum_profit):
     global max_profit
 
-    if job_end_day > N:
+    if job_start_day - 1 > N:
         return
     else:
         max_profit = sum_profit if sum_profit > max_profit else max_profit
@@ -19,13 +17,13 @@ def func(job_start_day, job_end_day, sum_profit):
     for i, days, profit in jobs:
         if not visited[i] and i == job_start_day:
             visited[i] = True
-            func(job_start_day + days, job_end_day + days, sum_profit + profit)
+            func(job_start_day + days, sum_profit + profit)
             visited[i] = False
         elif not visited[i] and i > job_start_day:
             visited[i] = True
-            func(i + days, i + days - 1, sum_profit + profit)
+            func(i + days, sum_profit + profit)
             visited[i] = False
 
-func(1, 0, 0)
+func(1, 0)
 
 print(max_profit)
