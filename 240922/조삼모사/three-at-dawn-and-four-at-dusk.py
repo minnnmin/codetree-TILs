@@ -4,7 +4,7 @@ for _ in range(N):
     intensity.append(list(map(int, input().split())))
 
 
-min_intensity = 300 - 3
+min_intensity = 1e9
 visited = [False] * (N+1)
 work_pairs = []
 
@@ -36,24 +36,18 @@ def pick_others(works):
 pick_works(0, [])
 
 for works in work_pairs:
-    # print('--- 시작 ---')
     day_intensity = 0
     night_intensity = 0
     others = pick_others(works)
-    # print(works)
-    # print(others)
     for x in works:
         for y in works:
             if x != y:
                 day_intensity += intensity[x-1][y-1]
-    # print('낮', day_intensity)
     for a in others:
         for b in others:
             if a != b:
                 night_intensity += intensity[a-1][b-1]
-    # print('밤', night_intensity)
     if min_intensity > abs(day_intensity - night_intensity):
         min_intensity = abs(day_intensity - night_intensity)
-    # print('--- 끝 ---')
 
 print(min_intensity)
