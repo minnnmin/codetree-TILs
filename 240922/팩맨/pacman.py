@@ -33,11 +33,23 @@ for i in range(monster_cnt):
     matrix[r][c] = 3
 
 for t in range(turn):
+    # print('1턴 후 남은 것들')
+    # print(monsters) -> []
+    # print(eggs)
+    # print(dead_monsters) -> [[2, 3, 0, True], [2, 3, 0, True]]
+    # print('===1.몬스터 복제 시도===')
     # 1. 몬스터 복제 시도
     for mr, mc, md in monsters:
         eggs.append([mr, mc, md, t])
         matrix[mr][mc] = 2
+    # for _ in monsters:
+    #     print(_)
+    # for _ in eggs:
+    #     print(_)
+    # print('====================')
+    # print('===2.몬스터 이동===')
     # 2. 몬스터 이동
+    # directions = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)]
     del_monsters = [] # 삭제할 몬스터 [r, c, d]
     add_monsters = [] # 추가할 몬스터
     for i in range(len(monsters)):
@@ -60,17 +72,33 @@ for t in range(turn):
                     break
             # 이동 불가능한 경우, 그냥 이동 안 하면 됨
     for dm in del_monsters:
+        # print('dm: ', dm)
+        # print('monsters: ', monsters)
         monsters.remove(dm)
+    # print()
     for am in add_monsters:
+        # print('am: ', am)
+        # print('monsters: ', monsters)
         monsters.append(am)
 
+    # print('test')
+    # for _ in monsters:
+    #     print(_)
+    # print()
+    # for _ in eggs:
+    #     print(_)
+    # print()
+    # print('====================')
+    # print('===3.팩맨 이동===')
     # 3. 팩맨 이동 - 64번 이동하고 몬스터 먹은 개수 확인 - 상좌하우: 0246 - 먹고 시체 남겨
+    # 0, 2, 4, 6의 조합
     max_route = (0, 0, 0) #이용한 루트
     max_score = 0 #잡아먹은 몬스터 개수
     visited = [[False for _ in range(5)] for _ in range(5)]
     for a in range(0, 7, 2):
         for b in range(0, 7, 2):
             for c in range(0, 7, 2):
+                # print('a, b, c', a, b, c)
                 eat_monster_cnt = 0
                 # 첫번째
                 npr1 = packman_r + directions[a][0]
@@ -100,24 +128,32 @@ for t in range(turn):
                 # 세번째
                 npr3 = npr2 + directions[c][0]
                 npc3 = npc2 + directions[c][1]
-                if 0 < npc3 < 5 and 0 < npr3 < 5 and not visited[npr3][npc3]:
-                    for mr, mc, md in monsters:
-                        if mr == npr3 and mc == npc3:
-                            eat_monster_cnt += 1
+                if 0 < npc3 < 5 and 0 < npr3 < 5:
+                    if visited[npr3][npc3]:
+                        pass
+                    else: # 그 자리에 몬스터 있으면 다 먹어
+                        for mr, mc, md in monsters:
+                            if mr == npr3 and mc == npc3:
+                                eat_monster_cnt += 1
                 else:
                     visited[npr1][npc1] = False
                     visited[npr2][npc2] = False
                     continue
-                visited[npr3][npc3] = True
+                # visited[npr3][npc3] = True
 
                 if max_score < eat_monster_cnt:
+                    # print('갱신', a, b, c)
+                    # print(max_score, eat_monster_cnt)
                     max_route = (a, b, c)
                     max_score = eat_monster_cnt
                 
                 visited[npr1][npc1] = False
                 visited[npr2][npc2] = False
-                visited[npr3][npc3] = False
+                # visited[npr3][npc3] = False
 
+    # print(max_route)
+    # print(max_score)
+    # 위에서 검사 끝났으니 이제 그 루트따라 이동하면서 몬스터 먹고 시체 남기고
     del_monsters = [] # 삭제할 몬스터 [r, c, d]
     for i in max_route:
         npr = packman_r + directions[i][0]
@@ -129,15 +165,45 @@ for t in range(turn):
                 dead_monsters.append([mr, mc, t, True])
         packman_r = npr
         packman_c = npc
+    # print('del_monsters', del_monsters)
     for dm in del_monsters:
         monsters.remove(dm)
-  
+    # for _ in dead_monsters:
+    #     print(_)
+    # print('====================')
+
+    # 4. 몬스터 시체 소멸
     for i in range(len(dead_monsters)):
         dmr, dmc, dt, TorF = dead_monsters[i]
         if dt + 2 == t:
             dead_monsters[i][3] = False       
 
+    # 5. 몬스터 복제 완성
+    # egg에 있는 애들 꺼내서 monsters로 옮겨
+    # monsters = [] # [r, c, d] - d: direction - 그래프로 할걸 그랬나
+    # eggs = [] # [r, c, d, t] - turn: egg가 된 턴
+    # print('eggs')
+    # for _ in eggs:
+    #     print(_)
+
+    # print('monsters')
+    # for _ in monsters:
+    #     print(_)
+
     for i in range(len(eggs)):
         er, ec, ed, et = eggs.pop()
+        # print('egg -> monster:', er, ec, ed)
         monsters.append([er, ec, ed])
+    
+    # print()
+    # for _ in eggs:
+    #     print(_)
+
+    # print()
+    # for _ in monsters:
+    #     print(_)
+    # print('턴 종료')
+    # print(monsters)
+    # print(eggs)
+    # print(dead_monsters)
 print(len(monsters))
