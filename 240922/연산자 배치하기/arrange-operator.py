@@ -19,8 +19,8 @@ def evaluate(opers):
     return answer
 
 
-max_val = -1e9
-min_val = 1e9
+max_val = -1e9//1
+min_val = 1e9//1
 visited = [False] * len(operators)
 
 def func(n, result):
