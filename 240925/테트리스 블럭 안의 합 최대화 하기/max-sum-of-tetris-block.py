@@ -5,14 +5,13 @@ for _ in range(N):
 
 answer = 0
 
-#(i, j)를 시작점으로 해서 도형 모양별로 탐색
-
+#(i, j)를 시작점으로 해서 가능한 모든 도형 탐색
 
 # ㅁㅁㅁㅁ
 for i in range(N):
     for j in range(M):
         if j+3 < M:
-            res = sum(matrix[i][j:j+4])
+            res = matrix[i][j] + matrix[i][j+1] + matrix[i][j+2] + matrix[i][j+3]
             answer = res if res > answer else answer
 # ㅁ
 # ㅁ
@@ -21,9 +20,7 @@ for i in range(N):
 for j in range(M):
     for i in range(N):
         if i+3 < N:
-            res = 0 
-            for k in range(i, i+4):
-                res += matrix[k][j]
+            res = matrix[i][j] + matrix[i+1][j] + matrix[i+2][j] + matrix[i+3][j]
             answer = res if res > answer else answer
 # ㅁㅁ
 # ㅁㅁ
