@@ -6,14 +6,6 @@ for _ in range(M):
     x, y, m, s, d = map(int, input().split())
     atom[x-1][y-1].append([m, s, d])
 
-# print(atom)
-''' 초기 atom
-[   [[], [[2, 2, 4]], [], []],
-    [[], [], [], [[5, 3, 6]]],
-    [[], [], [], []],
-    [[], [[1, 1, 0]], [[3, 2, 5]], []]
-]
-'''
 
 # 0부터 7까지 순서대로 ↑, ↗, →, ↘, ↓, ↙, ←, ↖
 dx = [-1, -1, 0, 1, 1, 1, 0, -1]
@@ -26,20 +18,20 @@ def new_pos(x, y, s, d):
     nx = x + dx[d]*s
     ny = y + dy[d]*s
     if nx < 0:
-        nx += N*(-nx//N)
+        if -nx % N == 0:
+            nx += N*(-nx//N)
+        else: 
+            nx += N*(-nx//N+1) #아 미친 딱 떨어지는 걸 간과했어
     elif nx > N-1:
         nx = nx - N*(nx//N)
     if ny < 0:
-        ny += N*(-ny//N)
+        if -ny % N == 0:
+            ny += N*(-ny//N)
+        else:
+            ny += N*(-ny//N+1)
     elif ny > N-1:
         ny = ny - N*(ny//N)
     return nx, ny
-
-# print(new_pos(0, 1, 2, 4))
-# print(new_pos(1, 3, 3, 6))
-# print(new_pos(3, 1, 1, 0))
-# print(new_pos(3, 2, 2, 5))
-
 
 # 원자 이동
 def move():
@@ -76,7 +68,7 @@ def mix_atom():
                 
                 new_mass = s_mass // 5
                 if new_mass == 0:
-                    break
+                    continue
                 new_speed = s_speed // l
                 new_dir = True
                 tmp_s = s_dir[0]
@@ -92,7 +84,6 @@ def mix_atom():
                 for k in range(4): # 다시 제자리에 합성된 원자 추가
                     atom[i][j].append([new_mass, new_speed, k*2 if new_dir else k*2+1])
 
-
 for k in range(K):
     # 원자 이동
     move()
@@ -105,5 +96,4 @@ for i in atom:
     for j in i:
         for at in j:
             sum_of_mass += at[0]
-
 print(sum_of_mass)
