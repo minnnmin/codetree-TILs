@@ -123,7 +123,8 @@ def kill_trees():
                     killer_pos = [i, j]
     
     # 실제로 분사하면서 나무 수 0으로 초기화, KILLER 배열에 잔여 년 추가
-    do_kill(killer_pos[0], killer_pos[1])
+    if killer_pos:
+        do_kill(killer_pos[0], killer_pos[1])
 
 
 # KILLER 에서 남은 년 수 1씩 차감
