@@ -14,7 +14,7 @@ left = 0
 back = 0
 
 def move_east():
-    global down, front, right, up, left, back
+    global Y, down, front, right, up, left, back
     # 주사위 숫자 갱신
     tmp = down
     down = right
@@ -31,7 +31,7 @@ def move_east():
     print(up)
     
 def move_west():
-    global down, front, right, up, left, back
+    global Y, down, front, right, up, left, back
     tmp = left
     left = up
     up = right
@@ -47,7 +47,7 @@ def move_west():
     print(up)
 
 def move_north():
-    global down, front, right, up, left, back
+    global X, down, front, right, up, left, back
     tmp = back
     back = up
     up = front
@@ -63,7 +63,7 @@ def move_north():
     print(up)
 
 def move_south():
-    global down, front, right, up, left, back
+    global X, down, front, right, up, left, back
     tmp = down
     down = front
     front = up
