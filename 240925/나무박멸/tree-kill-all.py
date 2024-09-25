@@ -86,13 +86,13 @@ def how_many_trees_killed(x, y):
 
 
 # (x, y) 위치에서 제초제 분사.
-def do_kill(x, y):
+def do_kill(x, y, ex_year):
     global KILLER, KILLED_TREE
 
     # 자기 자신
     KILLED_TREE += TREES[x][y]
     TREES[x][y] = 0
-    KILLER[x][y] = C
+    KILLER[x][y] = ex_year
     
     for d in range(4):
         for i in range(1, K+1):
@@ -100,17 +100,17 @@ def do_kill(x, y):
             new_y = y + i*db[d]
             if -1 < new_x < N and -1 < new_y < N and TREES[new_x][new_y] > -1:
                 if TREES[new_x][new_y] == 0:
-                    KILLER[new_x][new_y] = C
+                    KILLER[new_x][new_y] = ex_year
                     break
                 KILLED_TREE += TREES[new_x][new_y]
                 TREES[new_x][new_y] = 0
-                KILLER[new_x][new_y] = C
+                KILLER[new_x][new_y] = ex_year
             else:
                 break
 
 
 # 제초제 뿌리기 - 나무 있는 칸에 뿌려라. (제초제 없는 곳도 ㄴㄴ 어차피 거기 나무 0개)
-def kill_trees():
+def kill_trees(ex_year):
     # 박멸 나무 수가 최대인 곳 찾기
     max_dead_trees = 0
     killer_pos = []
@@ -123,24 +123,28 @@ def kill_trees():
                     killer_pos = [i, j]
     
     # 실제로 분사하면서 나무 수 0으로 초기화, KILLER 배열에 잔여 년 추가
-    do_kill(killer_pos[0], killer_pos[1])
+    if killer_pos:
+        do_kill(killer_pos[0], killer_pos[1], ex_year)
 
 
 # KILLER 에서 남은 년 수 1씩 차감
-def update_year():
+def update_killer(ex_year):
     global KILLER
     for i in range(N):
         for j in range(N):
-            if KILLER[i][j] > 0:
-                KILLER[i][j] -= 1
+            if KILLER[i][j] == ex_year:
+                KILLER[i][j] = 0
 
 
 for m in range(M):
+    # m년에 소멸될 제초제 0으로 갱신
+    update_killer(m)
     grow_trees()
+    # for _ in TREES:
+    #     print(_)
     make_baby_trees()
-    kill_trees()
-    if m != 0:
-        update_year()
+    kill_trees(m+C+1) # 이번에 뿌려지는 제초제는 m+C+1년차에 소멸됨
+
 
 print(KILLED_TREE)
 
