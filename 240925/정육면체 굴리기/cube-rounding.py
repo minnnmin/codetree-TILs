@@ -24,7 +24,9 @@ def move_east():
     
     Y += 1
 
-    if matrix[X][Y] != 0:
+    if matrix[X][Y] == 0:
+        matrix[X][Y] = down
+    elif matrix[X][Y] != 0:
         down = matrix[X][Y]
         matrix[X][Y] = 0
 
@@ -40,7 +42,9 @@ def move_west():
 
     Y -= 1
 
-    if matrix[X][Y] != 0:
+    if matrix[X][Y] == 0:
+        matrix[X][Y] = down
+    elif matrix[X][Y] != 0:
         down = matrix[X][Y]
         matrix[X][Y] = 0
 
@@ -55,11 +59,12 @@ def move_north():
     down = tmp
 
     X -= 1
-
-    if matrix[X][Y] != 0:
+    
+    if matrix[X][Y] == 0:
+        matrix[X][Y] = down
+    elif matrix[X][Y] != 0:
         down = matrix[X][Y]
         matrix[X][Y] = 0
-
     print(up)
 
 def move_south():
@@ -72,10 +77,13 @@ def move_south():
 
     X += 1
 
-    if matrix[X][Y] != 0:
+    if matrix[X][Y] == 0:
+        matrix[X][Y] = down
+    elif matrix[X][Y] != 0:
         down = matrix[X][Y]
         matrix[X][Y] = 0
-
+    
+    # print(X, Y, 's')
     print(up)
 
 for mo in move_order:
