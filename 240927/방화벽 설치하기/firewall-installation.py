@@ -52,7 +52,7 @@ def fire_spread(start_x, start_y, now_matrix):
                 
 
 # back tracking
-def add_3_firewalls(n):
+def add_3_firewalls(ex_i, ex_j, n):
     if n == 3:
         new_matrix = deepcopy(MATRIX) # 이거 왜 되냐...
         for x, y in FIRES:
@@ -60,12 +60,12 @@ def add_3_firewalls(n):
         update_max_no_fire_cnt(new_matrix)
         return
 
-    for i in range(N):
-        for j in range(M):
+    for i in range(ex_i, N):
+        for j in range(ex_j+1, M):
             if MATRIX[i][j] == 0:
                 MATRIX[i][j] = 1
-                add_3_firewalls(n+1)
+                add_3_firewalls(i, j, n+1)
                 MATRIX[i][j] = 0
 
-add_3_firewalls(0)
+add_3_firewalls(-1, -1, 0)
 print(MAX_NO_FIRE_CNT)
