@@ -2,26 +2,20 @@ N = int(input())
 MATRIX = [list(map(int, input().split())) for _ in range(N)]
 
 ROBOT_LV = 2
+MONSTER_CNT = 0
+MONSTERS_LEVEL = []
+KILLED_MONSTER = 0 # 레벨업 확인용
+
 for i in range(N):
     for j in range(N):
         if MATRIX[i][j] == 9:
             ROBOT_X = i
             ROBOT_Y = j
-
+        elif 0< MATRIX[i][j] < 7:
+            MONSTER_CNT += 1
+            MONSTERS_LEVEL.append(MATRIX[i][j])
 
 TIME = 0
-
-
-# 죽일 몬스터 위치 탐색 - 만약 얘가 -1을 리턴한다면 죽일 수 있는 게 없다는 뜻
-# 무조건 0,0부터 아니고 현 위치에서 젤 가까운 거 해야 함. 결국 힙쳐ㅑ 더ㅐ
-# def who_kill():
-#     res = -1
-#     for i in range(N):
-#         for j in range(N):
-#             if 0 < MATRIX[i][j] < ROBOT_LV:
-#                 res = [i, j]
-#                 return res
-#     return res
 
 
 # 상, 하, 좌, 우
@@ -38,7 +32,11 @@ TARGET_Y = -1
 def move(x, y, cnt, visited):
     global MIN_DIS, TARGET_X, TARGET_Y
 
+    if cnt > MIN_DIS:
+        return
+
     if 0 < MATRIX[x][y] < ROBOT_LV:
+        # print('hi')
         if cnt < MIN_DIS:
             MIN_DIS = cnt
             TARGET_X = x
@@ -52,6 +50,8 @@ def move(x, y, cnt, visited):
                     TARGET_X = x
                     TARGET_Y = y
         return
+    
+    # 남은 것들 못 먹는데, 싹다 돌 때 
 
     for i in range(4):
         nx = x + dx[i]
@@ -62,29 +62,62 @@ def move(x, y, cnt, visited):
             visited[nx][ny] = False
 
 
-def update_min_dis():
-    global MIN_DIS
-    MIN_DIS = 400
+# def update_min_dis():
+#     global MIN_DIS
+#     MIN_DIS = 1e9
 
 
-KILLED_MONSTER = 0
-while True:
+
+# while MONSTER_CNT != 0:
+#     VISITED = [[False for _ in range(N)] for _ in range(N)]
+#     update_min_dis()
+#     VISITED[ROBOT_X][ROBOT_Y] = True
+#     move(ROBOT_X, ROBOT_Y, 0, VISITED)
+#     if MIN_DIS == 1e9: # 그럼 이동 못한 거
+#         print('이동 못해')
+#         break
+#     else:
+#         print('여기로 이동했어', TARGET_X, TARGET_Y, MIN_DIS)
+#         TIME += MIN_DIS
+#         MATRIX[ROBOT_X][ROBOT_Y] = 0
+#         ROBOT_X, ROBOT_Y = TARGET_X, TARGET_Y
+#         MATRIX[ROBOT_X][ROBOT_Y] = 9
+#         for _ in MATRIX:
+#             print(_)
+#         KILLED_MONSTER += 1
+#         MONSTER_CNT -= 1
+#         if KILLED_MONSTER == ROBOT_LV:
+#             ROBOT_LV += 1
+#             KILLED_MONSTER = 0
+
+# print(TIME)
+
+
+while MONSTER_CNT != 0:
+    # print()
+    if min(MONSTERS_LEVEL) >= ROBOT_LV:
+        break
     VISITED = [[False for _ in range(N)] for _ in range(N)]
-    update_min_dis()
+    # update_min_dis()
+    MIN_DIS = 400
     VISITED[ROBOT_X][ROBOT_Y] = True
     move(ROBOT_X, ROBOT_Y, 0, VISITED)
     if MIN_DIS == 400: # 그럼 이동 못한 거
+        # print('이동 못해')
         break
     else:
-        # print('여기로 이동했어', TARGET_X, TARGET_Y, MIN_DIS)
         TIME += MIN_DIS
+        MONSTERS_LEVEL.remove(MATRIX[TARGET_X][TARGET_Y])
         MATRIX[ROBOT_X][ROBOT_Y] = 0
         ROBOT_X, ROBOT_Y = TARGET_X, TARGET_Y
         MATRIX[ROBOT_X][ROBOT_Y] = 9
+        # print('여기로 이동했어', TARGET_X, TARGET_Y, MIN_DIS, TIME, ROBOT_LV, i)
+        # for _ in MATRIX:
+        #     print(_)
         KILLED_MONSTER += 1
+        MONSTER_CNT -= 1
         if KILLED_MONSTER == ROBOT_LV:
             ROBOT_LV += 1
             KILLED_MONSTER = 0
 
 print(TIME)
-# 문제: DFS가 제대로 안 돌고 있음. 그래서 MIN_DIS 가 갱신이 안 된다.
