@@ -1,3 +1,5 @@
+from collections import deque
+
 N = int(input())
 MATRIX = [list(map(int, input().split())) for _ in range(N)]
 
@@ -26,78 +28,55 @@ dy = [0, 0, -1, 1]
 # (tx, ty)는 죽일 몬스터의 좌표(= 목표점)
 # (x, y)는 현재 좌표
 # cnt는 현재까지 이동 거리
+# bfs로 바꿔보자
 MIN_DIS = 400
 TARGET_X = -1
 TARGET_Y = -1
-def move(x, y, cnt, visited):
+def move(start_x, start_y):
     global MIN_DIS, TARGET_X, TARGET_Y
 
-    if cnt > MIN_DIS:
-        return
+    q = deque([[start_x, start_y, 0]]) # 세번째인자는 이동거리
 
-    if 0 < MATRIX[x][y] < 7 and 0 < MATRIX[x][y] < ROBOT_LV:
-        # print('hi')
-        if cnt < MIN_DIS:
-            MIN_DIS = cnt
-            TARGET_X = x
-            TARGET_Y = y
-        elif cnt == MIN_DIS:
-            if x < TARGET_X:
+    visited = [[False for _ in range(N)] for _ in range(N)]
+    visited[start_x][start_y] = True
+
+    while q:
+        x, y, dis = q.popleft()
+
+        if 0 < MATRIX[x][y] < 7 and MATRIX[x][y] < ROBOT_LV:
+            if dis < MIN_DIS:
+                MIN_DIS = dis
                 TARGET_X = x
                 TARGET_Y = y
-            elif x == TARGET_X:
-                if y < TARGET_Y:
+            elif dis == MIN_DIS:
+                if x < TARGET_X:
                     TARGET_X = x
                     TARGET_Y = y
-        return
-    
-    # 남은 것들 못 먹는데, 싹다 돌 때 
+                elif x == TARGET_X:
+                    if y < TARGET_Y:
+                        TARGET_X = x
+                        TARGET_Y = y
 
-    for i in range(4):
-        nx = x + dx[i]
-        ny = y + dy[i]
-        if -1 < nx < N and -1 < ny < N and not visited[nx][ny] and MATRIX[nx][ny] <= ROBOT_LV:
-            visited[nx][ny] = True
-            move(nx, ny, cnt+1, visited)
-            visited[nx][ny] = False
+        if dis > MIN_DIS:
+            break
 
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if -1 < nx < N and -1 < ny < N and not visited[nx][ny] and MATRIX[nx][ny] <= ROBOT_LV:
+                q.append([nx, ny, dis+1])
+                visited[nx][ny] = True
 
-
-# while MONSTER_CNT != 0:
-#     VISITED = [[False for _ in range(N)] for _ in range(N)]
-#     update_min_dis()
-#     VISITED[ROBOT_X][ROBOT_Y] = True
-#     move(ROBOT_X, ROBOT_Y, 0, VISITED)
-#     if MIN_DIS == 1e9: # 그럼 이동 못한 거
-#         print('이동 못해')
-#         break
-#     else:
-#         print('여기로 이동했어', TARGET_X, TARGET_Y, MIN_DIS)
-#         TIME += MIN_DIS
-#         MATRIX[ROBOT_X][ROBOT_Y] = 0
-#         ROBOT_X, ROBOT_Y = TARGET_X, TARGET_Y
-#         MATRIX[ROBOT_X][ROBOT_Y] = 9
-#         for _ in MATRIX:
-#             print(_)
-#         KILLED_MONSTER += 1
-#         MONSTER_CNT -= 1
-#         if KILLED_MONSTER == ROBOT_LV:
-#             ROBOT_LV += 1
-#             KILLED_MONSTER = 0
-
-# print(TIME)
 
 
 while MONSTER_CNT != 0:
+# for i in range(20):
+    print()
     if min(MONSTERS_LEVEL) >= ROBOT_LV:
         break
-    VISITED = [[False for _ in range(N)] for _ in range(N)]
-    # update_min_dis()
     MIN_DIS = 400
-    VISITED[ROBOT_X][ROBOT_Y] = True
-    move(ROBOT_X, ROBOT_Y, 0, VISITED)
+    move(ROBOT_X, ROBOT_Y)
     if MIN_DIS == 400: # 그럼 이동 못한 거
-        # print('이동 못해')
         break
     else:
         TIME += MIN_DIS
@@ -105,9 +84,6 @@ while MONSTER_CNT != 0:
         MATRIX[ROBOT_X][ROBOT_Y] = 0
         ROBOT_X, ROBOT_Y = TARGET_X, TARGET_Y
         MATRIX[ROBOT_X][ROBOT_Y] = 9
-        # print('여기로 이동했어', TARGET_X, TARGET_Y, MIN_DIS, TIME, ROBOT_LV, i)
-        # for _ in MATRIX:
-        #     print(_)
         KILLED_MONSTER += 1
         MONSTER_CNT -= 1
         if KILLED_MONSTER == ROBOT_LV:
