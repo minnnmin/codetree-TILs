@@ -11,7 +11,7 @@ for i in range(N):
         if MATRIX[i][j] == 9:
             ROBOT_X = i
             ROBOT_Y = j
-        elif 0< MATRIX[i][j] < 7:
+        elif 0 < MATRIX[i][j] < 7:
             MONSTER_CNT += 1
             MONSTERS_LEVEL.append(MATRIX[i][j])
 
@@ -35,7 +35,7 @@ def move(x, y, cnt, visited):
     if cnt > MIN_DIS:
         return
 
-    if 0 < MATRIX[x][y] < ROBOT_LV:
+    if 0 < MATRIX[x][y] < 7 and 0 < MATRIX[x][y] < ROBOT_LV:
         # print('hi')
         if cnt < MIN_DIS:
             MIN_DIS = cnt
@@ -60,11 +60,6 @@ def move(x, y, cnt, visited):
             visited[nx][ny] = True
             move(nx, ny, cnt+1, visited)
             visited[nx][ny] = False
-
-
-# def update_min_dis():
-#     global MIN_DIS
-#     MIN_DIS = 1e9
 
 
 
@@ -94,7 +89,6 @@ def move(x, y, cnt, visited):
 
 
 while MONSTER_CNT != 0:
-    # print()
     if min(MONSTERS_LEVEL) >= ROBOT_LV:
         break
     VISITED = [[False for _ in range(N)] for _ in range(N)]
