@@ -46,26 +46,17 @@ def move(x, y, tx, ty, cnt, visited):
         nx = x + dx[i]
         ny = y + dy[i]
         if -1 < nx < N and -1 < ny < N and not visited[nx][ny] and MATRIX[nx][ny] <= ROBOT_LV:
-            new_visited = deepcopy(visited)
-            new_visited[nx][ny] = True
-            move(nx, ny, tx, ty, cnt+1, new_visited)
+            # new_visited = deepcopy(visited)
+            # new_visited[nx][ny] = True
+            # move(nx, ny, tx, ty, cnt+1, new_visited)
+            visited[nx][ny] = True
+            move(nx, ny, tx, ty, cnt+1, visited)
+            visited[nx][ny] = False
 
 
 def update_min_dis():
     global MIN_DIS
     MIN_DIS = 400
-
-# VISITED = [[False for _ in range(N)] for _ in range(N)]
-# while True:
-#     target_pos = who_kill()
-#     if target_pos == -1:
-#         break
-#     MIN_DIS = 400
-#     move(ROBOT_X, ROBOT_Y, target_pos[0], target_pos[1], 0, VISITED) # 마지막엔 로봇도 이동해야 함
-#     TIME += MIN_DIS
-#     MATRIX[ROBOT_X][ROBOT_Y] = 0
-#     ROBOT_X, ROBOT_Y = target_pos[0], target_pos[1]
-#     MATRIX[ROBOT_X][ROBOT_Y] = 9
 
 
 KILLED_MONSTER = 0
