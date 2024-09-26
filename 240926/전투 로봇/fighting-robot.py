@@ -44,7 +44,7 @@ def move(x, y, tx, ty, cnt, visited):
     for i in range(4):
         nx = x + dx[i]
         ny = y + dy[i]
-        if -1 < nx < N and -1 < ny < N and not visited[nx][ny] and MATRIX[nx][ny] < ROBOT_LV:
+        if -1 < nx < N and -1 < ny < N and not visited[nx][ny] and MATRIX[nx][ny] <= ROBOT_LV:
             new_visited = deepcopy(visited)
             new_visited[nx][ny] = True
             move(nx, ny, tx, ty, cnt+1, new_visited)
