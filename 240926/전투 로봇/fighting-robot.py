@@ -71,7 +71,6 @@ def move(start_x, start_y):
 
 while MONSTER_CNT != 0:
 # for i in range(20):
-    print()
     if min(MONSTERS_LEVEL) >= ROBOT_LV:
         break
     MIN_DIS = 400
