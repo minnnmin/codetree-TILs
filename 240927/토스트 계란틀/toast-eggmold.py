@@ -4,9 +4,9 @@ N, L, R = map(int, input().split())
 EGGS = [list(map(int, input().split())) for _ in range(N)]
 TMP_EGGS = [[0 for _ in range(N)] for _ in range(N)]
 
-# 상하좌우
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+# 아래, 우
+dx = [-1, 0]
+dy = [0, 1]
 def in_range(x, y):
     return -1 < x < N and -1 < y < N
 
@@ -22,7 +22,7 @@ def bfs(start):
 
     while q:
         x, y = q.popleft()
-        for i in range(4):
+        for i in range(2):
             nx = x + dx[i]
             ny = y + dy[i]
             if in_range(nx, ny) and not visited[nx][ny] and L <= abs(EGGS[x][y] - EGGS[nx][ny]) <= R:
