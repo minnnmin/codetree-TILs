@@ -39,7 +39,7 @@ def bfs(start):
 
 
 # VISITED = [[0 for _ in range(N)] for _ in range(N)]
-for sec in range(2):
+for sec in range(2000):
     available = False
     # 합쳐질 계란들 집합 구하기
     for i in range(N):
@@ -59,5 +59,6 @@ for sec in range(2):
 
     # for _ in EGGS:
     #     print(_)
+    # print()
 
 print(sec)
