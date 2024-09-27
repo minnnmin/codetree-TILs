@@ -4,10 +4,6 @@ N, L, R = map(int, input().split())
 EGGS = [list(map(int, input().split())) for _ in range(N)]
 
 
-# 0이 아니라면 BFS가 지나간 곳임. 이 역시 매 초마다 초기화
-# VISITED = [[0 for _ in range(N)] for _ in range(N)]
-
-
 # 상하좌우
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
@@ -48,8 +44,9 @@ def bfs(start, gid):
 
 
 for sec in range(2000):
-    group_and_eggsum = [] # [group에 속하는 애들 좌표리스트, 계란의 합]
-    VISITED = [[0 for _ in range(N)] for _ in range(N)]
+    # group_and_eggsum = [] # [group에 속하는 애들 좌표리스트, 계란의 합]
+    group_and_eggsum = [] # [gid, 계란 개수, 계란의 합]
+    VISITED = [[0 for _ in range(N)] for _ in range(N)] # 0이 아니라면 BFS가 지나간 곳임.
     available = False
     # 합쳐질 계란들 집합 구하기
     for i in range(N):
@@ -57,17 +54,23 @@ for sec in range(2000):
             if not VISITED[i][j]:
                 group, eggs_sum = bfs([i, j], sec)
                 if len(group) != 1:
-                    group_and_eggsum.append([group, eggs_sum])
+                    group_and_eggsum.append([sec, len(group), eggs_sum])
                     available = True
-    # print(group, eggs_sum)
     if not available:
         break         
 
+
+    for gid, l, es in group_and_eggsum:
+        for a in range(N):
+            for b in range(N):
+                if EGGS[a][b] == gid:
+                    EGGS[a][b] = es // l
+
     # 계란 합치기 진행
-    for g, es in group_and_eggsum:
-        l = len(g)
-        for x, y in g:
-            EGGS[x][y] = es // l
+    # for g, es in group_and_eggsum:
+    #     l = len(g)
+    #     for x, y in g:
+    #         EGGS[x][y] = es // l
 
     # for _ in EGGS:
     #     print(_)
