@@ -48,17 +48,15 @@ VISITED = [[0 for _ in range(N)] for _ in range(N)]
 group_and_eggsum = [] # [group에 속하는 애들 좌표리스트, 계란의 합]
 for sec in range(2000):
     group_and_eggsum.clear()
-
-    for x in range(N):
-        for y in range(N):
-            VISITED[x][y] = 0
-
+    # for x in range(N):
+    #     for y in range(N):
+    #         VISITED[x][y] = 0
     available = False
     # 합쳐질 계란들 집합 구하기
     for i in range(N):
         for j in range(N):
             if not VISITED[i][j]:
-                group, eggs_sum = bfs([i, j], sec)
+                group, eggs_sum = bfs([i, j], (sec, i, j))
                 if len(group) != 1:
                     group_and_eggsum.append([group, eggs_sum])
                     available = True
