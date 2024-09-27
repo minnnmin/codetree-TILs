@@ -27,10 +27,8 @@ def bfs(start, gid):
     q = deque([start])
     visited = [[False for _ in range(N)] for _ in range(N)]
     visited[start[0]][start[1]] = True
-
     group = [start]
     eggs_sum = EGGS[start[0]][start[1]]
-
 
     while q:
         x, y = q.popleft()
@@ -47,8 +45,10 @@ def bfs(start, gid):
     return group, eggs_sum
 
 VISITED = [[0 for _ in range(N)] for _ in range(N)]
+group_and_eggsum = [] # [group에 속하는 애들 좌표리스트, 계란의 합]
 for sec in range(2000):
-    group_and_eggsum = [] # [group에 속하는 애들 좌표리스트, 계란의 합]
+    group_and_eggsum.clear()
+
     for x in range(N):
         for y in range(N):
             VISITED[x][y] = 0
