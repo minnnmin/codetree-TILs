@@ -53,11 +53,15 @@ for sec in range(2000):
         for j in range(N):
             if not VISITED[i][j]:
                 group, eggs_sum = bfs([i, j], sec)
+                # print(group, eggs_sum)
+                # print()
                 if len(group) != 1:
                     group_and_eggsum.append([sec, len(group), eggs_sum])
                     available = True
+    
     if not available:
-        break         
+        break
+
 
 
     for gid, l, es in group_and_eggsum:
@@ -65,6 +69,10 @@ for sec in range(2000):
             for b in range(N):
                 if EGGS[a][b] == gid:
                     EGGS[a][b] = es // l
+    
+    if (i, j) == (N-1, N-1) and available: # 그럼 싹다 합쳐진 거
+        sec += 1
+        break
 
     # 계란 합치기 진행
     # for g, es in group_and_eggsum:
@@ -72,9 +80,9 @@ for sec in range(2000):
     #     for x, y in g:
     #         EGGS[x][y] = es // l
 
-    # for _ in EGGS:
-    #     print(_)
-    # print()
+    for _ in EGGS:
+        print(_)
+    print()
 
 
 print(sec)
