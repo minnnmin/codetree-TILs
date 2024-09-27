@@ -13,12 +13,10 @@ def in_range(x, y):
 # 그룹으로 묶일 계란들 탐색
 # start = (x, y)
 
-
 q = deque()
 visited = [[False for _ in range(N)] for _ in range(N)]
 
 def bfs():
-
     while q:
         x, y = q.popleft()
         for i in range(4):
@@ -30,16 +28,23 @@ def bfs():
 
 
 for sec in range(1999):
-    is_changed = False
     # 합쳐질 계란들 집합 구하기
+    
     for i in range(N):
         for j in range(N):
-            if not TMP_EGGS[i][j]:
+            visited[i][j] = False
+
+    is_changed = False
+
+    for i in range(N):
+        for j in range(N):
+            if not visited[i][j]:
                 group = []
                 
                 q.append((i, j))
                 group.append((i, j))
                 visited[i][j] = True
+
                 bfs()
 
                 if len(group) > 1:
@@ -50,9 +55,11 @@ for sec in range(1999):
                     sum_of_eggs += EGGS[x][y]
                 
                 for x, y in group:
-                    EGGS[x][y] == sum_of_eggs // len(group)
+                    EGGS[x][y] = sum_of_eggs // len(group)
 
-
+    # for _ in EGGS:
+    #     print(_)
+    # print()
     if not is_changed:
         break
 
