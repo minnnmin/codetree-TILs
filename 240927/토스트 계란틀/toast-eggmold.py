@@ -11,7 +11,7 @@ def in_range(x, y):
     return -1 < x < N and -1 < y < N
 
 # 그룹으로 묶일 계란들 탐색
-# start = [x, y]
+# start = (x, y)
 def bfs(start):
 
     q = deque([start])
@@ -26,9 +26,9 @@ def bfs(start):
             nx = x + dx[i]
             ny = y + dy[i]
             if in_range(nx, ny) and not visited[nx][ny] and L <= abs(EGGS[x][y] - EGGS[nx][ny]) <= R:
-                q.append([nx, ny])
+                q.append((nx, ny))
                 visited[nx][ny] = True
-                group.append([nx, ny])
+                group.append((nx, ny))
                 eggs_sum += EGGS[nx][ny]
 
     l = len(group)
@@ -45,7 +45,7 @@ for sec in range(1999):
     for i in range(N):
         for j in range(N):
             if not TMP_EGGS[i][j]:
-                res = bfs([i, j])
+                res = bfs((i, j))
                 if res == True:
                     available = True
 
