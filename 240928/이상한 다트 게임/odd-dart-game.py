@@ -34,37 +34,6 @@ def rotate(dart_num, rotate_dir, rotate_cnt):
             DARTS[i] = DARTS[i][rotate_cnt:] + DARTS[i][:rotate_cnt]
 
 
-
-def in_range(x, y):
-    return -1 < x < N and -1 < y < M
-
-
-# 만약 (x, y)가 범위를 넘어서면 새로운 범위를 줌.
-def new_pos(x, y):
-    nx, ny = x, y
-    if x < 0:
-        tmp = -x % M
-        if tmp != 0:
-            nx = x + M*(-x//M+1)
-        else:
-            nx = x + M*(-x//M)
-    else:
-        nx = x - M*(x // M)
-    if y < 0:
-        tmp = -y % M
-        if tmp != 0:
-            ny = y + M*(-y//M+1)
-        else:
-            ny = y + M*(-y//M) 
-    else:
-        ny = y - M*(y // M)
-    return (nx, ny)
-
-
-q = deque()
-del_group = [] # 인접한 같은 수들의 좌표
-
-
 def get_darts_avg():
     cnt = 0
     sum_of_nums = 0
@@ -90,15 +59,8 @@ def normalization():
             elif DARTS[i][j] < avg:
                 DARTS[i][j] += 1
 
-# 원판에 남은 수가 있는지 확인
-def num_in_darts():
-    for i in range(N):
-        for j in range(M):
-            if DARTS[i][j] != 0:
-                return True
-    return False
 
-# 만약 (x, y)가 범위를 넘어서면 새로운 범위를 줌.
+# 만약 y가 범위를 넘어서면 새로운 범위를 줌.
 def new_y_pos(y):
     ny = y
     if y < 0:
@@ -110,6 +72,10 @@ def new_y_pos(y):
     else:
         ny = y - M*(y // M)
     return ny
+
+
+q = deque()
+del_group = [] # 인접한 같은 수들의 좌표
 
 
 def bfs(start): # 시작점 좌표 (x, y)
@@ -137,35 +103,20 @@ def bfs(start): # 시작점 좌표 (x, y)
 
 # 회전하는 원판의 종류 x, 방향 d, 회전하는 칸 수 k
 for x, d, k in ROTATE_ORDER:
-    # print('=== order start ===')
     rotate(x, d, k)
-    # print('전')
-    # for _ in DARTS:
-    #     print(_)
     do_normalize = True
     for i in range(N):
         for j in range(M):
             if DARTS[i][j] != 0:
                 del_group = []
                 bfs((i, j))
-                
-                # print('del_group', del_group)
                 if len(del_group) > 1:
                     # 인접 숫자 삭제
                     for nx, ny in del_group:
                         DARTS[nx][ny] = 0
                     do_normalize = False
-    # print('후')
-    # for _ in DARTS:
-    #    print(_)
     if do_normalize:
-        # 원판에 남은 수가 있으면 정규화
         normalization()
-        # if not num_in_darts():
-        #     normalization()
-    # for _ in DARTS:
-    #     print(_)
-    # break # 이거 지워라 ~~~~~~~~~~~~~
 
 answer = 0
 for i in range(N):
