@@ -15,11 +15,6 @@ for q in range(Q):
     # 회전하는 원판의 종류 x, 방향 d, 회전하는 칸 수 k
 
 
-# print('전')
-# for _ in DARTS:
-#     print(_)
-
-
 # 상하좌우
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
@@ -44,28 +39,30 @@ def in_range(x, y):
     return -1 < x < N and -1 < y < M
 
 
+# 만약 (x, y)가 범위를 넘어서면 새로운 범위를 줌.
+def new_pos(x, y):
+    nx, ny = x, y
+    if x < 0:
+        tmp = -x % M
+        if tmp != 0:
+            nx = x + M*(-x//M+1)
+        else:
+            nx = x + M*(-x//M)
+    else:
+        nx = x - M*(x // M)
+    if y < 0:
+        tmp = -y % M
+        if tmp != 0:
+            ny = y + M*(-y//M+1)
+        else:
+            ny = y + M*(-y//M) 
+    else:
+        ny = y - M*(y // M)
+    return (nx, ny)
+
+
 q = deque()
 del_group = [] # 인접한 같은 수들의 좌표
-
-
-def bfs(start): # 시작점 좌표 (x, y)
-    
-    visited = [[False for _ in range(M)] for _ in range(N)]
-
-    q.append(start)
-    del_group.append(start)
-
-    visited[start[0]][start[1]] = True
-    num = DARTS[start[0]][start[1]]
-
-    while q:
-        x, y = q.popleft()
-        for i in range(4):
-            nx, ny = x + dx[i], y + dy[i]
-            if in_range(nx, ny) and not visited[nx][ny] and DARTS[nx][ny] == num:
-                q.append((nx, ny))
-                visited[nx][ny] = True
-                del_group.append((nx, ny))
 
 
 def get_darts_avg():
@@ -101,27 +98,74 @@ def num_in_darts():
                 return True
     return False
 
+# 만약 (x, y)가 범위를 넘어서면 새로운 범위를 줌.
+def new_y_pos(y):
+    ny = y
+    if y < 0:
+        tmp = -y % M
+        if tmp != 0:
+            ny = y + M*(-y//M+1)
+        else:
+            ny = y + M*(-y//M) 
+    else:
+        ny = y - M*(y // M)
+    return ny
+
+
+def bfs(start): # 시작점 좌표 (x, y)
+    
+    visited = [[False for _ in range(M)] for _ in range(N)]
+
+    q.append(start)
+    del_group.append(start)
+
+    visited[start[0]][start[1]] = True
+    num = DARTS[start[0]][start[1]]
+
+    while q:
+        x, y = q.popleft()
+        for i in range(4):
+            nx, ny = x + dx[i], y + dy[i]
+            if not -1 < nx < N:
+                continue
+            ny = new_y_pos(ny)
+            if not visited[nx][ny] and DARTS[nx][ny] == num:
+                q.append((nx, ny))
+                visited[nx][ny] = True
+                del_group.append((nx, ny))
+
 
 # 회전하는 원판의 종류 x, 방향 d, 회전하는 칸 수 k
 for x, d, k in ROTATE_ORDER:
+    # print('=== order start ===')
     rotate(x, d, k)
+    # print('전')
+    # for _ in DARTS:
+    #     print(_)
+    do_normalize = True
     for i in range(N):
         for j in range(M):
             if DARTS[i][j] != 0:
                 del_group = []
                 bfs((i, j))
-                # print('후')
-                # for _ in DARTS:
-                #     print(_)
+                
                 # print('del_group', del_group)
                 if len(del_group) > 1:
                     # 인접 숫자 삭제
                     for nx, ny in del_group:
                         DARTS[nx][ny] = 0
-                else:
-                    # 원판에 남은 수가 있으면 정규화
-                    if not num_in_darts():
-                        normalization()
+                    do_normalize = False
+    # print('후')
+    # for _ in DARTS:
+    #    print(_)
+    if do_normalize:
+        # 원판에 남은 수가 있으면 정규화
+        normalization()
+        # if not num_in_darts():
+        #     normalization()
+    # for _ in DARTS:
+    #     print(_)
+    # break # 이거 지워라 ~~~~~~~~~~~~~
 
 answer = 0
 for i in range(N):
