@@ -113,7 +113,7 @@ def not_available():
 
 t = 0
 # # # 불가능한 경우가 있나?
-while t < 77:
+while t < 1000:
     t += 1
     # 말 하나씩 꺼내서 순서대로 이동
     MUST_STOP = False
