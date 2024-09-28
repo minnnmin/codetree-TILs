@@ -138,6 +138,7 @@ while t < 1000:
     if MUST_STOP:
         break
     
+
     # t += 1
     # 말 4개 이상이 겹쳐지면 break
     # not_available = False
@@ -158,4 +159,6 @@ while t < 1000:
 # for _ in PLAYING_GAME:
 #     print(_)
 
+if t == 1000:
+    t = -1
 print(t)
