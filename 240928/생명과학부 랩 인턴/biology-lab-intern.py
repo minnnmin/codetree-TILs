@@ -38,7 +38,6 @@ def check_mold(col):
 
     for i in range(N):
         if MOLD[i][col] != []: # 곰팡이 있으면 채취
-            print('먹는다', MOLD[i][col])
             MOLD_SIZE_SUM += MOLD[i][col][0][2]
             MOLD[i][col] = []
             return
