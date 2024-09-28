@@ -4,9 +4,6 @@ for _ in range(K):
     x, y, s, d, b = map(int, input().split())
     MOLD[x-1][y-1].append([s, d-1, b])
 
-# for _ in MOLD:
-#     print(_)
-
     
 MOLD_SIZE_SUM = 0
 
@@ -62,8 +59,6 @@ def move_mold():
                         nx, ny = nx + dx[d], ny + dy[d]
                     else:
                         nx, ny = nx + dx[d], ny + dy[d]
-                # if not -1 < nx < N:
-                #     print('hi')
                 MOVE_MOLD.append([nx, ny, s, d, b])
                 MOLD[x][y] = []
 
@@ -73,25 +68,19 @@ def del_mold():
     for x in range(N):
         for y in range(M):
             if len(MOLD[x][y]) > 1:
-                # print(len(MOLD[x][y]))
                 s, d, b = MOLD[x][y][0]
                 for mold in MOLD[x][y][1:]:
                     if mold[2] > b:
                         s, d, b = mold[0], mold[1], mold[2]
-                # print(s, d, b)
                 MOLD[x][y] = [[s, d, b]]
 
 
 for i in range(M):
     check_mold(i)
     move_mold()
-    # print('MOVE_MOLD', MOVE_MOLD)
     for nx, ny, s, d, b in MOVE_MOLD:
         MOLD[nx][ny].append([s, d, b])
     MOVE_MOLD = []
     del_mold()
-    # for i in range(4):
-    #     print(MOLD[i])
-    # print()
 
 print(MOLD_SIZE_SUM)
