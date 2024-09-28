@@ -11,5 +11,3 @@ tmp.append(N-1)
 order_list = [] # [(0, 1), (1, 1), (2, 2), (3, 2), (0, 3), (1, 3), (2, 4), (3, 4), (0, 4)]
 for i in range(len(tmp)):
     order_list.append((i%4, tmp[i]))
-
-ㄹ
