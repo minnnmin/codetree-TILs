@@ -100,18 +100,16 @@ def count_people(rectangle):
 
     # 3의 x는 0부터 오른쪽꼭지 x까지, y는 위꼭 y+1~ N-1까지
     for x in range(0, right[0]+1):
-        # for y in range(up[1], N):
         for y in range(N-1, up[1]-1, -1):
             if group[x][y] == 0:
                 group[x][y] = 3
 
     # 5의 x는 오꼭 x+1부터 N-1, y는 아래꼭y~n
     for x in range(right[0]+1, N):
-        for y in range(down[1], N):
+        for y in range(N-1, down[1]-1, -1):
             if group[x][y] == 0:
                 group[x][y] = 5
 
-    
     # for _ in group:
     #     print(_)
 
@@ -125,10 +123,6 @@ def count_people(rectangle):
 
     res = max(group_people) - min(group_people[1:])
     if res < PEOPLE_DIFF:
-        # print(group_people)
-        # for _ in group:
-        #     print(_)
-        # print()
         PEOPLE_DIFF = res
 
 
