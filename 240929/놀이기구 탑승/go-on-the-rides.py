@@ -44,9 +44,11 @@ def ride(student):
 
     like_cnt, empty_cnt = 0, 0
     next_x, next_y = -1, -1
+    empty_pos = []
     for x in range(N):
         for y in range(N):
             if STUDENTS[x][y] != 0: # 학생이 탑승하고 있으면 pass
+                empty_pos.append((x, y))
                 continue
             like, empty = score[x][y]
             if like > like_cnt or (like == like_cnt and empty > empty_cnt):
@@ -54,7 +56,10 @@ def ride(student):
                 next_x, next_y = x, y
 
     if (next_x, next_y) == (-1, -1):
-        next_x, next_y = N-1, N-1
+        # next_x, next_y = N-1, N-1
+        # 빈 곳에 타야지
+        next_x, next_y = empty_pos[0][0], empty_pos[0][1]
+        
 
     STUDENTS[next_x][next_y] = student
 
