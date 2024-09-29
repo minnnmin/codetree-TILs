@@ -35,15 +35,20 @@ def dfs(x, y, d, history):
 
 
     # 현재 방향 유지
-    new_history1 = deepcopy(history)
-    new_history1.append((x+dx[d], y+dy[d]))
-    dfs(x+dx[d], y+dy[d], d, new_history1)
+    nx1, ny1 = x+dx[d], y+dy[d]
+    if -1 < nx < N and -1 < ny < N:    
+        new_history1 = deepcopy(history)
+        new_history1.append((nx, ny))
+        dfs(nx1, ny1, d, new_history1)
     
     # 다음 방향으로 변경
     if d < 3:
-        new_history2 = deepcopy(history)
-        new_history2.append((x+dx[(d+1)%4], y+dy[(d+1)%4]))
-        dfs(x+dx[(d+1)%4], y+dy[(d+1)%4], (d+1)%4, new_history2)
+        nd = (d+1)%4
+        nx2, ny2 = x+dx[nd], y+dy[nd]
+        if -1 < nx2 < N and -1 < ny2 < N: 
+            new_history2 = deepcopy(history)
+            new_history2.append((nx2, ny2))
+            dfs(nx2, ny2, nd, new_history2)
 
 
 # 기울어진 직사각형들의 좌표를 넣어주고, 1~5 부족의 인구수를 센 다음, 최대-최소 값을 전역변수 PEOPLE_DIFF에 갱신
