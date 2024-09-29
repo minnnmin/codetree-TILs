@@ -36,9 +36,9 @@ def dfs(x, y, d, history):
 
     # 현재 방향 유지
     nx1, ny1 = x+dx[d], y+dy[d]
-    if -1 < nx < N and -1 < ny < N:    
+    if -1 < nx1 < N and -1 < ny1 < N:    
         new_history1 = deepcopy(history)
-        new_history1.append((nx, ny))
+        new_history1.append((nx1, ny1))
         dfs(nx1, ny1, d, new_history1)
     
     # 다음 방향으로 변경
