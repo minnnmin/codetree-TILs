@@ -28,7 +28,7 @@ def dfs(x, y, d, history):
         history.pop()
         RECTANGLE.append(history)
         return
-    if d == 3 and x >= history[0][0]:
+    if d == 3 and x > history[0][0]:
         return
     if not (-1 < x < N and -1 < y < N):
         return
@@ -80,7 +80,6 @@ def count_people(rectangle):
             l, r = one_pos[0], one_pos[1]
             for x in range(l[1], r[1]):
                 group[i][x] = 1
-
     # 1은 그냥 좌표값의 합 + 그 가운데 있는 애들은 제일 마지막에 체크할까?
     # 2의 x는 0~왼꼭x-1, y는 0~위꼭y까지
     for x in range(0, left[0]):
@@ -88,17 +87,19 @@ def count_people(rectangle):
             if group[x][y] == 0:
                 group[x][y] = 2
 
-    # 3의 x는 0부터 오른쪽꼭지 x까지, y는 위꼭 y+1~ N-1까지
-    for x in range(0, right[0]+1):
-        for y in range(up[1], N):
-            if group[x][y] == 0:
-                group[x][y] = 3
-
     # 4의 x는 왼꼭x부터 N-1, y는 0~아래꼭y-1
     for x in range(left[0], N):
         for y in range(0, down[1]):
             if group[x][y] == 0:
                 group[x][y] = 4
+            if group[x][y] == 1:
+                break
+
+    # 3의 x는 0부터 오른쪽꼭지 x까지, y는 위꼭 y+1~ N-1까지
+    for x in range(0, right[0]+1):
+        for y in range(up[1], N):
+            if group[x][y] == 0:
+                group[x][y] = 3
 
     # 5의 x는 오꼭 x+1부터 N-1, y는 아래꼭y~n
     for x in range(right[0]+1, N):
@@ -115,22 +116,20 @@ def count_people(rectangle):
     # for _ in group:
     #     print(_)
 
-    group_people = [0 for _ in range(N+1)]
+    group_people = [0 for _ in range(6)]
 
     for i in range(N):
         for j in range(N):
             gid = group[i][j]
             group_people[gid] += PEOPLE[i][j]
+            
 
-    # print(group_people)
-    tmp_min_cnt = 1e9
-    for cnt in group_people:
-        if 0 < cnt < tmp_min_cnt:
-            tmp_min_cnt = cnt
-
-    res = max(group_people) - tmp_min_cnt
-    # print(group_people)
+    res = max(group_people) - min(group_people[1:])
     if res < PEOPLE_DIFF:
+        # print(group_people)
+        # for _ in group:
+        #     print(_)
+        # print()
         PEOPLE_DIFF = res
 
 
@@ -140,37 +139,8 @@ for i in range(2, N):
         nx, ny = i+dx[0], j+dy[0]
         dfs(nx, ny, 0, [(i, j), (nx, ny)])
 
+
 for rec in RECTANGLE:
     count_people(rec)
 
 print(PEOPLE_DIFF)
-
-
-# tmp_rec = [(1, 3), (2, 2), (2, 4), (3, 1), (3, 5), (4, 2), (4, 4), (5, 3)]
-# count_people(tmp_rec)
-
-# [[0, 0, 0, 0, 0, 0, 0],
-#  [0, 0, 0, 1, 0, 0, 0],
-#  [0, 0, 1, 0, 1, 0, 0],
-#  [0, 1, 0, 0, 0, 1, 0],
-#  [0, 0, 1, 0, 1, 0, 0],
-#  [0, 0, 0, 1, 0, 0, 0],
-#  [0, 0, 0, 0, 0, 0, 0]]
-
-# count_people(RECTANGLE)
-
-
-# for i in range(len(RECTANGLE)):
-#     # print(RECTANGLE[i]) # [(2, 1), (1, 2), (0, 1), (1, 0), (2, 1)]
-#     tmp = [[0 for _ in range(N)] for _ in range(N)]
-#     for x, y in RECTANGLE[i]:
-#         tmp[x][y] = 1
-#     for _ in tmp:
-#         print(_)
-#     print()
-
-
-# for rec in RECTANGLE:
-#     count_people(rec)
-
-# print(PEOPLE_DIFF)
