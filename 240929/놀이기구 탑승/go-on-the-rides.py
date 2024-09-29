@@ -48,13 +48,16 @@ def ride(student):
     for x in range(N):
         for y in range(N):
             if STUDENTS[x][y] != 0: # 학생이 탑승하고 있으면 pass
-                empty_pos.append((x, y))
                 continue
             like, empty = score[x][y]
             if like > like_cnt or (like == like_cnt and empty > empty_cnt):
                 like_cnt, empty_cnt = like, empty
                 next_x, next_y = x, y
+            elif STUDENTS[x][y] == 0:
+                empty_pos.append((x, y))
 
+    # 위에 for문을 돌고 나서 next_x, next_y가 세팅되지 않았을 수 있음
+    # 그럴 때는 빈칸이 하나였을 것 
     if (next_x, next_y) == (-1, -1):
         # next_x, next_y = N-1, N-1
         # 빈 곳에 타야지
