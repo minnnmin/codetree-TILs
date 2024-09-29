@@ -41,6 +41,20 @@ def virus_eat_nutrient():
             NUTRIENT[x][y] += age//2
 
 
+# # 바이러스 번식 - 나이가 5의 배수인 경우에만
+# def make_virus():
+#     for x in range(N):
+#         for y in range(N):
+#             if len(VIRUS[x][y]) > 0:
+#                 for age in VIRUS[x][y]:
+#                     if age % 5 == 0:
+#                         for i in range(8):
+#                             nx, ny = x + dx[i], y + dy[i]
+#                             if in_range(nx, ny):
+#                                 VIRUS[nx][ny].append(1)
+#                                 VIRUS[nx][ny].sort()
+
+
 # 바이러스 번식 - 나이가 5의 배수인 경우에만
 def make_virus():
     for x in range(N):
@@ -52,7 +66,12 @@ def make_virus():
                             nx, ny = x + dx[i], y + dy[i]
                             if in_range(nx, ny):
                                 VIRUS[nx][ny].append(1)
-                                VIRUS[nx][ny].sort()
+                                # VIRUS[nx][ny].sort()
+    for x in range(N):
+        for y in range(N):
+            if len(VIRUS[x][y]) > 0:
+                VIRUS[x][y].sort()
+
 
 # 양분 증가
 def add_nutrient():
