@@ -11,6 +11,8 @@ for _ in range(N*N):
     RIDE_ORDER.append(n0)
     LIKE[n0] = [n1, n2, n3, n4]
 
+ANSWER = 0 # 점수 총합
+like_score = [0, 1, 10, 100, 1000]
 
 # 상하좌우
 dx = [-1, 1, 0, 0]
@@ -59,16 +61,10 @@ def ride(student):
     # 위에 for문을 돌고 나서 next_x, next_y가 세팅되지 않았을 수 있음
     # 그럴 때는 빈칸이 하나였을 것 
     if (next_x, next_y) == (-1, -1):
-        # next_x, next_y = N-1, N-1
-        # 빈 곳에 타야지
         next_x, next_y = empty_pos[0][0], empty_pos[0][1]
         
-
     STUDENTS[next_x][next_y] = student
 
-
-ANSWER = 0 # 점수 총합
-like_score = [0, 1, 10, 100, 1000]
 
 def sum_score():
     global ANSWER
@@ -83,15 +79,9 @@ def sum_score():
                     if STUDENTS[nx][ny] in LIKE[student]:
                         like += 1
             ANSWER += like_score[like]
-    # print('여기', ANSWER)
 
 
 for student in RIDE_ORDER:
     ride(student)
-    # for _ in STUDENTS:
-    #     print(_)
-    # print()
-# for _ in STUDENTS:
-    # print(_)
 sum_score()
 print(ANSWER)
