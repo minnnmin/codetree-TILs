@@ -20,11 +20,9 @@ dy = [1, -1, -1, 1]
 
 # 현재 위치, 현재 위치로 올 때의 방향, 지나온 좌표 모음
 def dfs(x, y, d, history):
-    # if d > 3:
-    #     return
     if d == 3 and (x, y) == (history[0][0], history[0][1]):
         # 기울어진 직사각형 완성
-        # print('x, y, d, history', x, y, d, history)
+
         history.pop()
         RECTANGLE.append(history)
         return
@@ -112,11 +110,11 @@ def count_people(rectangle):
             if group[x][y] == 0:
                 group[x][y] = 5
     
-    # 마지막으로 1 내부 표시
-    for x in range(up[0]+1, down[0]):
-        for y in range(left[0]+1, right[1]):
-            if group[x][y] == 0:
-                group[x][y] = 1
+    # # 마지막으로 1 내부 표시
+    # for x in range(up[0]+1, down[0]):
+    #     for y in range(left[0]+1, right[1]):
+    #         if group[x][y] == 0:
+    #             group[x][y] = 1
     
     # for _ in group:
     #     print(_)
