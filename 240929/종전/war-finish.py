@@ -101,7 +101,7 @@ def count_people(rectangle):
     # 3의 x는 0부터 오른쪽꼭지 x까지, y는 위꼭 y+1~ N-1까지
     for x in range(0, right[0]+1):
         # for y in range(up[1], N):
-        for y in range(N-1, up[1]-1, -1)
+        for y in range(N-1, up[1]-1, -1):
             if group[x][y] == 0:
                 group[x][y] = 3
 
