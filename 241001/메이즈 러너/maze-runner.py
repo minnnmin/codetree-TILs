@@ -220,10 +220,10 @@ def rotate(left_up, right_up, left_down, right_down):
     i = 0
     for x in range(right_down[0], right_up[0]-1, -1):
         PLAYER[x][right_down[1]] = tmp_up_player[i]
-        if down_wall[i] > 0:
-            WALL[x][right_down[1]] = down_wall[i] - 1
+        if tmp_up_wall[i] > 0:
+            WALL[x][right_down[1]] = tmp_up_wall[i] - 1
         else:
-            WALL[x][right_down[1]] = down_wall[i]
+            WALL[x][right_down[1]] = tmp_up_wall[i]
         EXIT_MAP[x][right_down[1]] = tmp_up_exit[i]
         i += 1
 
@@ -254,9 +254,9 @@ for k in range(K):
             break
     if not there_is_player:
         break
-    for _ in PLAYER:
-        print(_)
-    print()
+    # for _ in WALL:
+    #     print(_)
+    # print()
     vertex_x, vertex_y, diagonal, dis = get_min_square()
     left_up, right_up, left_down, right_down = get_4_vertex(vertex_x, vertex_y, diagonal, dis)
     
@@ -284,15 +284,15 @@ for k in range(K):
             right_down = (right_down[0]-1*i, right_down[1]-1*i)
             rotate(left_up, right_up, left_down, right_down)
     
-    print('2. 회전 후')
+    # print('2. 회전 후')
     for r in range(N):
         for c in range(N):
             if EXIT_MAP[r][c] == 1:
                 EXIT = [r, c]
-    print('출구', EXIT)
-    for _ in PLAYER:
-        print(_)
-    print()
+    # print('출구', EXIT)
+    # for _ in WALL:
+    #     print(_)
+    # print()
 
     # print('후')
     # for _ in PLAYER:
