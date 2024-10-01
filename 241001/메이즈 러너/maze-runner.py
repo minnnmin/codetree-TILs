@@ -271,7 +271,6 @@ for k in range(K):
             left_down = (left_down[0]-1*i, left_down[1]+1*i)
             right_down = (right_down[0]-1*i, right_down[1]-1*i)
             if left_up == left_down == right_up == right_down:
-                print('wow')
                 if WALL[left_up[0]][left_up[1]] > 0:
                     WALL[left_up[0]][left_up[1]] -= 1
                 break
@@ -302,3 +301,4 @@ for k in range(K):
     #     print(_)
 
 print(ANSWER)
+print(*EXIT)
