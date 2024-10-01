@@ -196,7 +196,7 @@ def dfs(t, players_pos, history):
             if his[3] <= 40:
                 score += his[3]
         MAX_SCORE = score if score > MAX_SCORE else MAX_SCORE
-        if MAX_SCORE == 200:
+        # if MAX_SCORE == 200:
             # print(history)
             # print(players_pos)
             # print()
