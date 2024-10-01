@@ -216,7 +216,7 @@ def rotate(left_up, right_up, left_down, right_down):
     # 위쪽 애들 오른쪽으로 싹 이동 한칸
     tmp_up_player.reverse()
     tmp_up_wall.reverse()
-    tmp_up_wall.reverse()
+    tmp_up_exit.reverse()
     i = 0
     for x in range(right_down[0], right_up[0]-1, -1):
         PLAYER[x][right_down[1]] = tmp_up_player[i]
@@ -263,17 +263,6 @@ for k in range(K):
     # print('2. 네 꼭짓점을 정한 후')
     # print(left_up, right_up, left_down, right_down)
 
-    # 출구 먼저 이동 - 출구가 꼭짓점이 아닐 수도 있다고
-    # if (EXIT[0], EXIT[1]) == left_up:
-    #     EXIT[1] += dis
-    # elif (EXIT[0], EXIT[1]) == right_up:
-    #     EXIT[0] += dis
-    # elif (EXIT[0], EXIT[1]) == left_down:
-    #     EXIT[0] -= dis
-    # elif (EXIT[0], EXIT[1]) == right_down:
-    #     EXIT[1] -= dis
-
-
     # 젤 겉에 사각형부터 넣어줌
     if dis % 2 == 0:
         for i in range((dis+2)//2): # d=4; 3회; 마지막 1회는 안 해도 됨
@@ -295,15 +284,15 @@ for k in range(K):
             right_down = (right_down[0]-1*i, right_down[1]-1*i)
             rotate(left_up, right_up, left_down, right_down)
     
-    # print('2. 회전 후')
+    print('2. 회전 후')
     for r in range(N):
         for c in range(N):
             if EXIT_MAP[r][c] == 1:
                 EXIT = [r, c]
     print('출구', EXIT)
-    # for _ in PLAYER:
-    #     print(_)
-    # print()
+    for _ in PLAYER:
+        print(_)
+    print()
 
     # print('후')
     # for _ in PLAYER:
