@@ -231,16 +231,17 @@ def rotate(left_up, right_up, left_down, right_down):
 for k in range(K):
     # 플레이어 없으면 없애야 함
     there_is_player = False
-    for rows in PLAYER:
-        if sum(rows) > 0:
-            there_is_player = True
-            break
-    if not there_is_player:
-        break
+    # for rows in PLAYER:
+    #     if sum(rows) > 0:
+    #         there_is_player = True
+    #         break
+    # if not there_is_player:
+    #     break
     # print('전')
     # for _ in PLAYER:
     #     print(_)
     # print()
+    PLAYER[EXIT[0]][EXIT[1]] = 0 
     move_all_player()
     # print('1. 이동 후')
     # for _ in PLAYER:
@@ -253,8 +254,12 @@ for k in range(K):
             break
     if not there_is_player:
         break
+    for _ in PLAYER:
+        print(_)
+    print()
     vertex_x, vertex_y, diagonal, dis = get_min_square()
     left_up, right_up, left_down, right_down = get_4_vertex(vertex_x, vertex_y, diagonal, dis)
+    
     # print('2. 네 꼭짓점을 정한 후')
     # print(left_up, right_up, left_down, right_down)
 
@@ -295,7 +300,7 @@ for k in range(K):
         for c in range(N):
             if EXIT_MAP[r][c] == 1:
                 EXIT = [r, c]
-    # print('출구', EXIT)
+    print('출구', EXIT)
     # for _ in PLAYER:
     #     print(_)
     # print()
