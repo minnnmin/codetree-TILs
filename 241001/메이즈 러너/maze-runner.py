@@ -8,7 +8,7 @@ for _ in range(M):
 
 x, y = map(int, input().split())
 EXIT = [x-1, y-1]
-EXIT_MAP = [0 for _ in range(N)] for _ in range(N)]
+EXIT_MAP = [[0 for _ in range(N)] for _ in range(N)]
 EXIT_MAP[x-1][y-1] = 1
 
 # 총 이동횟수
@@ -96,8 +96,8 @@ def get_4_vertex(vertex_x, vertex_y, diagonal, dis):
                     (vertex_x-dis, vertex_y), (EXIT[0]-dis, EXIT[1]), (vertex_x, vertex_y), (EXIT[0], EXIT[1])
         elif vertex_y > EXIT[1]: # V가 E 오른쪽에 있을 경우
             if dis > vertex_x:
-                print('이거 아니니?')
-                print('EXIT', EXIT)
+                # print('이거 아니니?')
+                # print('EXIT', EXIT)
                 left_up, right_up, left_down, right_down = \
                     (0, EXIT[1]), (0, vertex_y), (dis, EXIT[1]), (dis, vertex_y)
             elif dis <= vertex_x:
@@ -156,25 +156,31 @@ def rotate(left_up, right_up, left_down, right_down):
     dis = right_up[1] - left_up[1]
     tmp_up_player = PLAYER[left_up[0]][left_up[1]:right_up[1]+1]
     tmp_up_wall = WALL[left_up[0]][left_up[1]:right_up[1]+1]
+    tmp_up_exit = EXIT_MAP[left_up[0]][left_up[1]:right_up[1]+1]
 
     # 좌측 애들 위측으로 싹 이동 한칸
     left_player = []
     left_wall = []
+    left_exit = []
     for i in range(dis+1):
         left_player.append(PLAYER[left_down[0] - i][left_up[1]])
         if WALL[left_down[0] - i][left_up[1]] > 0:
             left_wall.append(WALL[left_down[0] - i][left_up[1]]-1)
         else:
             left_wall.append(WALL[left_down[0] - i][left_up[1]])
+        left_exit.append(EXIT_MAP[left_down[0] - i][left_up[1]])
     i = 0
     for j in range(left_up[1], right_up[1]+1):
         PLAYER[left_up[0]][j] = left_player[i]
         WALL[left_up[0]][j] = left_wall[i]
+        EXIT_MAP[left_up[0]][j] = left_exit[i]
         i += 1
     
+
     # 아래 애들 왼쪽으로 싹 이동 한칸
     down_player = PLAYER[left_down[0]][left_down[1]:right_down[1]+1]
     down_wall = WALL[left_down[0]][left_down[1]:right_down[1]+1]
+    down_exit = EXIT_MAP[left_down[0]][left_down[1]:right_down[1]+1]
     i = 0
     for x in range(left_up[0], left_down[0]+1):
         PLAYER[x][left_up[1]] = down_player[i]
@@ -182,16 +188,21 @@ def rotate(left_up, right_up, left_down, right_down):
             WALL[x][left_up[1]] = down_wall[i] - 1
         else:
             WALL[x][left_up[1]] = down_wall[i]
+        EXIT_MAP[x][left_up[1]] = down_exit[i]
         i += 1
     
+
     # 우측 애들 아래로 싹 이동 한칸
     right_player = []
     right_wall = []
+    right_exit = []
     for x in range(right_down[0], right_up[0]-1, -1):
         right_player.append(PLAYER[x][right_up[1]])
         right_wall.append(WALL[x][right_up[1]])
+        right_exit.append(EXIT_MAP[x][right_up[1]])
     right_player[-1] = tmp_up_player[-1]
     right_wall[-1] = tmp_up_wall[-1]
+    right_exit[-1] = tmp_up_exit[-1]
     i = 0
     for y in range(left_down[1], right_down[1]+1):
         PLAYER[left_down[0]][y] = right_player[i]
@@ -199,10 +210,12 @@ def rotate(left_up, right_up, left_down, right_down):
             WALL[left_down[0]][y] = right_wall[i] - 1
         else:
             WALL[left_down[0]][y] = right_wall[i]
+        EXIT_MAP[left_down[0]][y] = right_exit[i]
         i += 1
     
     # 위쪽 애들 오른쪽으로 싹 이동 한칸
     tmp_up_player.reverse()
+    tmp_up_wall.reverse()
     tmp_up_wall.reverse()
     i = 0
     for x in range(right_down[0], right_up[0]-1, -1):
@@ -211,15 +224,8 @@ def rotate(left_up, right_up, left_down, right_down):
             WALL[x][right_down[1]] = down_wall[i] - 1
         else:
             WALL[x][right_down[1]] = down_wall[i]
-
+        EXIT_MAP[x][right_down[1]] = tmp_up_exit[i]
         i += 1
-
-    # for _ in PLAYER:
-    #     print(_)
-    # print()
-    # for _ in WALL:
-    #     print(_)
-    # print()
 
 
 for k in range(K):
@@ -231,15 +237,15 @@ for k in range(K):
             break
     if not there_is_player:
         break
-    print('전')
-    for _ in PLAYER:
-        print(_)
-    print()
+    # print('전')
+    # for _ in PLAYER:
+    #     print(_)
+    # print()
     move_all_player()
-    print('1. 이동 후')
-    for _ in PLAYER:
-        print(_)
-    print()
+    # print('1. 이동 후')
+    # for _ in PLAYER:
+    #     print(_)
+    # print()
     there_is_player = False
     for rows in PLAYER:
         if sum(rows) > 0:
@@ -249,8 +255,8 @@ for k in range(K):
         break
     vertex_x, vertex_y, diagonal, dis = get_min_square()
     left_up, right_up, left_down, right_down = get_4_vertex(vertex_x, vertex_y, diagonal, dis)
-    print('2. 네 꼭짓점을 정한 후')
-    print(left_up, right_up, left_down, right_down)
+    # print('2. 네 꼭짓점을 정한 후')
+    # print(left_up, right_up, left_down, right_down)
 
     # 출구 먼저 이동 - 출구가 꼭짓점이 아닐 수도 있다고
     # if (EXIT[0], EXIT[1]) == left_up:
@@ -261,6 +267,7 @@ for k in range(K):
     #     EXIT[0] -= dis
     # elif (EXIT[0], EXIT[1]) == right_down:
     #     EXIT[1] -= dis
+
 
     # 젤 겉에 사각형부터 넣어줌
     if dis % 2 == 0:
@@ -283,11 +290,15 @@ for k in range(K):
             right_down = (right_down[0]-1*i, right_down[1]-1*i)
             rotate(left_up, right_up, left_down, right_down)
     
-    print('2. 회전 후')
-    print('출구', EXIT)
-    for _ in PLAYER:
-        print(_)
-    print()
+    # print('2. 회전 후')
+    for r in range(N):
+        for c in range(N):
+            if EXIT_MAP[r][c] == 1:
+                EXIT = [r, c]
+    # print('출구', EXIT)
+    # for _ in PLAYER:
+    #     print(_)
+    # print()
 
     # print('후')
     # for _ in PLAYER:
