@@ -172,6 +172,11 @@ def get_next_pos(now, group, cnt):
 # players_pos = [[위치, 그룹], [], ..]
 def dfs(t, players_pos, history):
     global MAX_SCORE
+    # if len(history) == 6:
+    #     print(players_pos)
+    #     print('turn', t)
+    #     print(history)
+    #     print()
 
     done = True
     for pos, group in players_pos:
@@ -183,10 +188,9 @@ def dfs(t, players_pos, history):
             if his[3] <= 40:
                 score += his[3]
         MAX_SCORE = score if score > MAX_SCORE else MAX_SCORE
-        # if MAX_SCORE == 200:
-        #     print(history)
-        #     print(players_pos)
-        #     print()
+        # print(history)
+        # print(players_pos)
+        # print()
         return
 
     if t == 10:
@@ -196,10 +200,9 @@ def dfs(t, players_pos, history):
             if his[3] <= 40:
                 score += his[3]
         MAX_SCORE = score if score > MAX_SCORE else MAX_SCORE
-        # if MAX_SCORE == 200:
-            # print(history)
-            # print(players_pos)
-            # print()
+        # print(history)
+        # print(players_pos)
+        # print()
         return
 
     # 진행
@@ -208,7 +211,7 @@ def dfs(t, players_pos, history):
         if pos > 40:
             continue
         next_pos, next_group = get_next_pos(pos, group, ORDER[t])
-        if (next_pos, next_group) not in players_pos:
+        if next_pos > 40 or (next_pos, next_group) not in players_pos:
             players_pos[i] = (next_pos, next_group)
             history.append((t, pos, group, next_pos, next_group))
             dfs(t+1, players_pos, history)
