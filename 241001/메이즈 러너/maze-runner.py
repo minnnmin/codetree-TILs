@@ -219,6 +219,7 @@ def rotate(left_up, right_up, left_down, right_down):
     tmp_up_exit.reverse()
     i = 0
     for x in range(right_down[0], right_up[0]-1, -1):
+        print(tmp_up_player, i)
         PLAYER[x][right_down[1]] = tmp_up_player[i]
         if tmp_up_wall[i] > 0:
             WALL[x][right_down[1]] = tmp_up_wall[i] - 1
