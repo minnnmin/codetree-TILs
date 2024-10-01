@@ -98,6 +98,8 @@ def get_next_pos(now, group, cnt):
                 elif cnt >= 3:
                     next_pos = 25 + (cnt-2)*5
                     next_group = 'H'
+                    if next_pos >= 40:
+                        next_group = ''
             elif now == 19:
                 if cnt == 1:
                     next_pos = 25
@@ -105,6 +107,8 @@ def get_next_pos(now, group, cnt):
                 elif cnt >= 2:
                     next_pos = 25 + (cnt-1)*5
                     next_group = 'H'
+                    if next_pos >= 40:
+                        next_group = ''
         elif group == 'F':
             if now == 22:
                 if cnt == 1:
@@ -115,6 +119,8 @@ def get_next_pos(now, group, cnt):
                 elif cnt >= 3:
                     next_pos = 25 + (cnt-2)*5
                     next_group = 'H'
+                    if next_pos >= 40:
+                        next_group = ''
             elif now == 24:
                 if cnt == 1:
                     next_pos = 25
@@ -122,6 +128,8 @@ def get_next_pos(now, group, cnt):
                 elif cnt >= 2:
                     next_pos = 25 + (cnt-1)*5
                     next_group = 'H'
+                    if next_pos >= 40:
+                        next_group = ''
         elif group == 'G':
             if now == 28:
                 if cnt <= 3:
@@ -131,6 +139,8 @@ def get_next_pos(now, group, cnt):
                 elif cnt >= 4:
                     next_pos = 25 + (cnt-3)*5
                     next_group = 'H'
+                    if next_pos >= 40:
+                        next_group = ''
             elif now == 27:
                 if cnt <= 2:
                     next_pos = 27 - cnt*1
@@ -139,6 +149,8 @@ def get_next_pos(now, group, cnt):
                 elif cnt >= 3:
                     next_pos = 25 + (cnt-2)*5
                     next_group = 'H'
+                    if next_pos >= 40:
+                        next_group = ''
             elif now == 26:
                 if cnt == 1:
                     next_pos = 25
@@ -146,19 +158,16 @@ def get_next_pos(now, group, cnt):
                 elif cnt >= 2:
                     next_pos = 25 + (cnt-1)*5
                     next_group = 'H'
+                    if next_pos >= 40:
+                        next_group = ''
         elif group == 'H':
             next_pos = now + cnt*5
             if next_pos >= 40:
                 next_group = ''
 
-    return next_pos, next_group
-        
 
-# print(get_next_pos(30, 'E', 1))
-# print(get_next_pos(30, 'E', 2))
-# print(get_next_pos(30, 'E', 3))
-# print(get_next_pos(30, 'E', 4))
-# print(get_next_pos(30, 'E', 5))
+    return next_pos, next_group
+
 
 # players_pos = [[위치, 그룹], [], ..]
 def dfs(t, players_pos, history):
@@ -174,6 +183,10 @@ def dfs(t, players_pos, history):
             if his[3] <= 40:
                 score += his[3]
         MAX_SCORE = score if score > MAX_SCORE else MAX_SCORE
+        # if MAX_SCORE == 200:
+        #     print(history)
+        #     print(players_pos)
+        #     print()
         return
 
     if t == 10:
@@ -183,6 +196,10 @@ def dfs(t, players_pos, history):
             if his[3] <= 40:
                 score += his[3]
         MAX_SCORE = score if score > MAX_SCORE else MAX_SCORE
+        if MAX_SCORE == 200:
+            # print(history)
+            # print(players_pos)
+            # print()
         return
 
     # 진행
