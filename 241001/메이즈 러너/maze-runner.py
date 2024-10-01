@@ -301,4 +301,6 @@ for k in range(K):
     #     print(_)
 
 print(ANSWER)
+EXIT[0] += 1
+EXIT[1] += 1
 print(*EXIT)
