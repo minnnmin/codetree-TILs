@@ -17,8 +17,6 @@ for i, (r, c, h, w, k, origin_k) in enumerate(KNIGHT_POS[1:]):
     for x in range(r, r+h):
         for y in range(c, c+w):
             KNIGHT_STATE[x][y] = i+1
-# for _ in KNIGHT_STATE:
-#     print(_)
 
 ORDER = [tuple(map(int, input().split())) for _ in range(Q)]
 # 상 우 하 좌
@@ -48,8 +46,10 @@ def can_move(knight_num, d):
                     return False
                 else:
                     if 0 < KNIGHT_STATE[x][y] and KNIGHT_STATE[x][y] != now_knight_num:
-                        attacked.append(KNIGHT_STATE[x][y])
-                        history.append(KNIGHT_STATE[x][y])
+                        if KNIGHT_STATE[x][y] not in attacked:
+                            attacked.append(KNIGHT_STATE[x][y])
+                        if KNIGHT_STATE[x][y] not in history:
+                            history.append(KNIGHT_STATE[x][y])
     
     # can_push 함수 리턴값이 True면, 이동가능하다는 거고, 전역변수인 ATTACKED가 갱신되어 있을 것(없을 수도 있음. 혼자만 이동한 경우)
     ATTACKED = history
@@ -100,27 +100,12 @@ def move(d):
 
 t = 0
 for knight_num, d in ORDER:
-    # print('턴', t)
     t += 1
     if knight_num in DEAD_KNIGHT:
-        # print(knight_num, '는 죽어서 진행 안 해요')
         continue
     if can_move(knight_num, d):
-        # print(knight_num, '를', d, '로 이동 가능해요')
-        # print('ATTACKED는', ATTACKED)
         move(d)
-        # print(knight_num, '를', d, '로 이동 후 상태는 아래와 같아요')
-        # print('KNIGHT_STATE')
-        # for _ in KNIGHT_STATE:
-        #     print(_)
-        # print('KNIGHT_POS')
-        # for _ in KNIGHT_POS:
-        #     print(_)
-        # print('DEAD_KNIGHT')
-        # for _ in DEAD_KNIGHT:
-        #     print(_)
     else:
-        # print(knight_num, '를', d, '로 이동 불가능해요')
         continue
 
 answer = 0
