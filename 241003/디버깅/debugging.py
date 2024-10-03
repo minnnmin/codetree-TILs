@@ -1,5 +1,5 @@
 N, M, H = map(int, input().split())
-R, C = N*2-1, H+2
+R, C = H+2, N*2-1
 
 # MATRIX = [[0 for _ in range(C)] for _ in range(R)]
 LOSS_LINES_POS = []
