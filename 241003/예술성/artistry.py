@@ -97,7 +97,7 @@ def rotate_cross():
 
 # 회전 - 나머지 사각형
 # 회전할 사각형의 왼쪽상단 꼭짓점 (x, y)와 변의 길이 size를 넣으면 회전시킴
-def rotate_square(x, y, size):
+def rotate_square2(x, y, size):
     global COLOR
 
     new = [[0 for _ in range(N)] for _ in range(N)]
@@ -136,7 +136,47 @@ def rotate_square(x, y, size):
         for j in range(y, y+size):
             COLOR[i][j] = new[i][j]
 
+
+def rotate_square(x, y, size):
+    global COLOR
+
+    new = [[0 for _ in range(N)] for _ in range(N)]
+
+    # 위쪽 변 -> 오른쪽 변
+    for i in range((size+1) // 2): # size가 5면, 이 안에서 3번 돌아야 됨
+        # i는 0, 1
+        for j in range(size-1-i, -1+i, -1) : # 겉에서부터 돌아감
+            # j는 4, 3, 2, 1, 0 그다음에 3, 2, 1
+            new[x+j][y+size-1-i] = COLOR[x+i][y+j]
+
+    # 왼쪽 변 -> 위쪽 변
+    for i in range((size+1) // 2):
+        # i는 0, 1
+        for j in range(size-1-i, -1+i, -1) : # 겉에서부터 돌아감
+            # j는 4, 3, 2, 1, 0 그다음에 3, 2, 1
+            new[x+i][y+j] = COLOR[x+size-1-j][y+i]
+
+    # 아래 변 -> 왼쪽 변
+    for i in range((size+1) // 2):
+        # i는 0, 1
+        for j in range(i, size-i) : # 겉에서부터 돌아감
+            # j는 0, 1, 2, 3, 4 그다음에 1, 2, 3
+            new[x+j][y+i] = COLOR[x+size-1-i][y+j]
+
+    # 오른쪽 변 -> 아래 변
+    for i in range((size+1) // 2): # size가 5면, 이 안에서 2번 돌아야 됨
+        # i는 0, 1
+        for j in range(i, size-i) : # 겉에서부터 돌아감
+            # j는 0, 1, 2, 3, 4 그다음에 1, 2, 3
+            new[x+size-1-i][y+j] = COLOR[x+size-1-j][y+size-1-i]
+
+    # print('뉴 행렬')
     
+    for i in range(x, x+size):
+        for j in range(y, y+size):
+            COLOR[i][j] = new[i][j]
+
+
 for turn in range(4):
     if turn == 4:
         break
@@ -183,5 +223,9 @@ for turn in range(4):
     rotate_square(0, N//2 + 1, N//2) # 오른쪽 위
     rotate_square(N//2 + 1, 0, N//2)
     rotate_square(N//2 + 1, N//2 + 1, N//2)
+    # print(turn, '턴의 회전 후 COLOR')
+    # for _ in COLOR:
+    #     print(_)
+    # print()
 
 print(sum(ANSWER))
