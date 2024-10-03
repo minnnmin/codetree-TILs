@@ -6,7 +6,6 @@ PLAYERS_POS = [(R-1, i*2) for i in range(N)] # 0~N-1번째 플레이어들의 �
 
 for _ in range(M):
     x, y = map(int, input().split())
-    LOSS_LINES_POS.append((x, y*2-1))
     LOSS_LINES_STATE[x][y*2-1] = 1 # 초기 유실선 배치
 
 def in_range(x, y):
