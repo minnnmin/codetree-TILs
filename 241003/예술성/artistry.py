@@ -15,7 +15,7 @@ GROUP_INFO = [()]
 GROUP_POS = [()]
 
 # 인접 변 개수 점수. SCORE[i][j]는 그룹 i와 그룹 j의 인접변 개수
-SCORE = [[0 for _ in range(30)] for _ in range(30)]
+SCORE = [[0 for _ in range(900)] for _ in range(900)]
 
 # 초기, 1~3회전 후 예술점수를 여기 쌓아
 ANSWER = []
@@ -150,7 +150,7 @@ for turn in range(4):
     GROUP = [[0 for _ in range(N)] for _ in range(N)]
     GROUP_INFO = [()]
     GROUP_POS = [()]
-    SCORE = [[0 for _ in range(30)] for _ in range(30)]
+    SCORE = [[0 for _ in range(900)] for _ in range(900)]
 
     # 그룹 나누기
     group_num = 1
@@ -185,20 +185,3 @@ for turn in range(4):
     rotate_square(N//2 + 1, N//2 + 1, N//2)
 
 print(sum(ANSWER))
-
-# for _ in SCORE:
-#     print(_)
-# print()
-
-
-# for _ in GROUP:
-#     print(_)
-# print()
-
-# for _ in GROUP_INFO:
-#     print(_)
-# print()
-
-
-# for _ in GROUP:
-#     print(_)
