@@ -1,8 +1,6 @@
 N, M, H = map(int, input().split())
 R, C = H+2, N*2-1
 
-# MATRIX = [[0 for _ in range(C)] for _ in range(R)]
-LOSS_LINES_POS = []
 LOSS_LINES_STATE = [[0 for _ in range(C)] for _ in range(R)]
 PLAYERS_POS = [(R-1, i*2) for i in range(N)] # 0~N-1번째 플레이어들의 초기 위치
 
@@ -31,10 +29,8 @@ def move_data():
             # 우측
             elif in_range(nx, ny+1) and LOSS_LINES_STATE[nx][ny+1] == 1:
                 ny += 2
-        # final_pos.append((nx, ny))
         if ny != y:
             return False
-    # print(final_pos) # 검사용임
     return True
     # return False
 
@@ -45,9 +41,6 @@ def backtracking(n):
 
     if n == ANSWER:
         if move_data(): # 만약 이동했는데 된다면 전역변수 AVAILABLE를 True로 갱신
-            # print(ANSWER, '개의 유실선을 더 놓은 후 유실선 위치')
-            # for _ in LOSS_LINES_STATE:
-            #     print(_)
             AVAILABLE = True
         return
     
@@ -58,7 +51,6 @@ def backtracking(n):
                 continue
             if (not in_range(x, y-2) or LOSS_LINES_STATE[x][y-2] == 0)\
                 and (not in_range(x, y+2) or LOSS_LINES_STATE[x][y+2] == 0):
-                # LOSS_LINES_POS 도 갱신해야 할까?
                 LOSS_LINES_STATE[x][y] = 1
                 backtracking(n+1)
                 LOSS_LINES_STATE[x][y] = 0
