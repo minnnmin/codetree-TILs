@@ -38,6 +38,7 @@ def bfs(x, y):
             nr, nc = r+dx[i], c+dy[i]
             if in_range(nr, nc) and not visited[nr][nc]:
                 if MATRIX[nr][nc] == 2: # 병원 발견
+                    q.clear()
                     return dis
                 else:
                     visited[nr][nc] = True
@@ -76,8 +77,10 @@ def backtracking2(n, history):
             MATRIX[nx][ny] = 0
             history.pop()
 
+
 # m개씩 짝지어진 병원들 정보. m이 2일 때: [(병원1 위치, 병원2 위치), ... ]
 SELECTED_HOSPITALS = []
+
 def backtracking(n, history):
     global SELECTED_HOSPITALS 
 
@@ -101,12 +104,11 @@ for pairs in SELECTED_HOSPITALS:
     for x, y in pairs:
         MATRIX[x][y] = 2
     res = 0
-    for x in range(N):
-        for y in range(N):
-            if MATRIX[x][y] == 1: # 사람이면 BFS 돌려서 병원거리 구하기
-                q.clear()
-                tmp = bfs(x, y)
-                res += tmp
+    for x, y in PEOPLE:
+        # q.clear()
+        tmp = bfs(x, y)
+        res += tmp
+    
     ANSWER = res if res < ANSWER else ANSWER
     for x, y in pairs:
         MATRIX[x][y] = 0
