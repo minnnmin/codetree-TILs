@@ -3,9 +3,6 @@ MATRIX = [list(map(int, input().split())) for _ in range(N)]
 HOSPITALS = []
 PEOPLE = []
 
-L = len(HOSPITALS)
-ANSWER = 1e9
-
 for x in range(N):
     for y in range(N):
         if MATRIX[x][y] == 2:
@@ -14,9 +11,17 @@ for x in range(N):
         elif MATRIX[x][y] == 1:
             PEOPLE.append((x, y))
 
+L = len(HOSPITALS)
+ANSWER = 1e9
+
+
 # 상하좌우
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
+
+def in_range(x, y):
+    return -1 < x < N and -1 < y < N
+
 
 # m개씩 짝지어진 병원들 정보. m이 2일 때: [(병원1 위치, 병원2 위치), ... ]
 SELECTED_HOSPITALS = []
@@ -41,13 +46,14 @@ def backtracking(n, history):
 backtracking(0, []) # -> 남겨둘 병원 쌍이 저장되어 있음
 
 for pairs in SELECTED_HOSPITALS:
+    # pairs에 병원 m개 담겨있음
     res = 0
     for x, y in PEOPLE:
-        min_dis = 1e9
+        tmp = 1e9 # 이번 사람의 최소 병원거리
         for hx, hy in pairs:
-            tmp = abs(hx-x) + abs(hy-y)
-            min_dis = tmp if tmp < min_dis else min_dis
-        res += min_dis
+            tmp2 = abs(hx-x) + abs(hy-y)
+            tmp = tmp2 if tmp2 < tmp else tmp
+        res += tmp
     ANSWER = res if res < ANSWER else ANSWER
     for x, y in pairs:
         MATRIX[x][y] = 0
