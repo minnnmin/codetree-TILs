@@ -1,16 +1,18 @@
 N, M = map(int, input().split())
 MATRIX = [list(map(int, input().split())) for _ in range(N)]
 HOSPITALS = []
+PEOPLE = []
 
 for x in range(N):
     for y in range(N):
         if MATRIX[x][y] == 2:
             HOSPITALS.append((x, y))
             MATRIX[x][y] = 0
+        elif MATRIX[x][y] == 1:
+            PEOPLE.append((x, y))
 
 L = len(HOSPITALS)
 ANSWER = 1e9
-
 
 from collections import deque
 
@@ -48,12 +50,10 @@ def bfs(x, y):
 def get_hospital_dist():
     global ANSWER
     res = 0
-    for x in range(N):
-        for y in range(N):
-            if MATRIX[x][y] == 1: # 사람이면 BFS 돌려서 병원거리 구하기
-                q.clear()
-                tmp = bfs(x, y)
-                res += tmp
+    for x, y in PEOPLE:
+        q.clear()
+        tmp = bfs(x, y)
+        res += tmp
                 
     ANSWER = res if res < ANSWER else ANSWER
 
