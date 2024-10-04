@@ -101,14 +101,14 @@ def backtracking(n, history):
 backtracking(0, []) # -> 남겨둘 병원 쌍이 저장되어 있음
 
 for pairs in SELECTED_HOSPITALS:
-    for x, y in pairs:
-        MATRIX[x][y] = 2
+    # pairs에 병원 m개 담겨있음
     res = 0
     for x, y in PEOPLE:
-        # q.clear()
-        tmp = bfs(x, y)
+        tmp = 1e9 # 이번 사람의 최소 병원거리
+        for hx, hy in pairs:
+            tmp2 = abs(hx-x) + abs(hy-y)
+            tmp = tmp2 if tmp2 < tmp else tmp
         res += tmp
-    
     ANSWER = res if res < ANSWER else ANSWER
     for x, y in pairs:
         MATRIX[x][y] = 0
