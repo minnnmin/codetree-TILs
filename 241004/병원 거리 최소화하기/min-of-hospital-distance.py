@@ -51,9 +51,10 @@ def get_hospital_dist():
     for x in range(N):
         for y in range(N):
             if MATRIX[x][y] == 1: # 사람이면 BFS 돌려서 병원거리 구하기
+                q.clear()
                 tmp = bfs(x, y)
                 res += tmp
-                q.clear()
+                
     ANSWER = res if res < ANSWER else ANSWER
 
 
@@ -99,7 +100,14 @@ backtracking(0, []) # -> 남겨둘 병원 쌍이 저장되어 있음
 for pairs in SELECTED_HOSPITALS:
     for x, y in pairs:
         MATRIX[x][y] = 2
-    get_hospital_dist()
+    res = 0
+    for x in range(N):
+        for y in range(N):
+            if MATRIX[x][y] == 1: # 사람이면 BFS 돌려서 병원거리 구하기
+                q.clear()
+                tmp = bfs(x, y)
+                res += tmp
+    ANSWER = res if res < ANSWER else ANSWER
     for x, y in pairs:
         MATRIX[x][y] = 0
 
