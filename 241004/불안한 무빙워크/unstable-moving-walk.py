@@ -49,11 +49,14 @@ def move_people():
             STABLE[MOVING_WALK[0][j]] -= 1
     PEOPLE[-1] = 0 # N칸에 사람 있으면 하차 시키기
             
-
+KEEP_GOING = True
 turn = 1
 rotate()
 add_people()
-while True:
+if STABLE.count(0) >= K:
+    KEEP_GOING = False
+
+while KEEP_GOING:
     turn += 1
     rotate()
     move_people()
@@ -62,14 +65,3 @@ while True:
         break
 
 print(turn)
-
-
-# PEOPLE = [1, 0, 1]
-
-# rotate()
-# rotate()
-
-# for _ in MOVING_WALK:
-#     print(_)
-
-# print(PEOPLE)
