@@ -14,14 +14,9 @@ for x in range(N):
 L = len(HOSPITALS)
 ANSWER = 1e9
 
-
 # 상하좌우
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
-
-def in_range(x, y):
-    return -1 < x < N and -1 < y < N
-
 
 # m개씩 짝지어진 병원들 정보. m이 2일 때: [(병원1 위치, 병원2 위치), ... ]
 SELECTED_HOSPITALS = []
@@ -30,9 +25,7 @@ def backtracking(n, history):
     global SELECTED_HOSPITALS 
 
     if n == M:
-        tmp = []
-        for i in history:
-            tmp.append(HOSPITALS[i])
+        tmp = [HOSPITALS[i] for i in history]
         SELECTED_HOSPITALS.append(tmp)
         return
 
