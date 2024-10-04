@@ -5,10 +5,6 @@ num = 1
 PEOPLE = [0 for _ in range(N)]
 STABLE = [-1] + list(map(int, input().split())) # 0번째 판은 안 씀
 
-# print(STABLE)
-# for _ in MOVING_WALK:
-    # print(_)
-
 
 # 무빙워크 회전(그 위에 있는 사람도 같이 이동)
 def rotate():
@@ -48,7 +44,8 @@ def move_people():
             PEOPLE[j-1] = 0
             STABLE[MOVING_WALK[0][j]] -= 1
     PEOPLE[-1] = 0 # N칸에 사람 있으면 하차 시키기
-            
+
+      
 KEEP_GOING = True
 turn = 1
 rotate()
