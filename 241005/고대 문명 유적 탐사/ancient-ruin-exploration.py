@@ -32,11 +32,6 @@ def rotate_fake(x, y):
             COPY_MATRIX[i][j] = TMP_MATRIX[i][j]
 
 
-# # 만들어진 COPY_MATRIX를 가지고 얻을 수 있는 유물 가치를 리턴
-# def get_value(): # bfs
-#     pass
-
-
 # (x, y) 중심으로 해서 3x3 크기 배열을 시계 방향 90만큼 회전 - 리얼 매트릭스 대상
 def rotate_real(x, y):
     global MATRIX
@@ -56,6 +51,7 @@ def rotate_real(x, y):
         TMP_MATRIX[x+1][j] = MATRIX[i][y+1]
     # 가운데
     TMP_MATRIX[x][y] = MATRIX[x][y]
+    
     # 마지막에 tmp를 matrix에 옮겨
     for i in range(x-1, x+2):
         for j in range(y-1, y+2):
@@ -111,8 +107,6 @@ def bfs_real(x, y):
                 q.append((nr, nc))
                 history.append((nr, nc))
                 cnt += 1
-    # if cnt >= 3:
-        # print('bfs 안, 중심과 history', x, y, history)
     return cnt, history
 
 
@@ -174,9 +168,6 @@ for turn in range(K):
                 MAX_VAL = res270
                 CENTER_POS = (x, y)
                 ANGLE = 270
-
-    # print('정해진 중심좌표:', CENTER_POS)
-    # print('정해진 각도:', ANGLE)
     
     # 자 이제 회전 중심(CENTER_POS)과 각도(ANGLE)가 정해졌으니
     # 실제로 MATRIX를 회전시킨 다음 유물을 획득해 본다.
