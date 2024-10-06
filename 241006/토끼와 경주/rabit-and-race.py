@@ -1,15 +1,27 @@
+import heapq
+
 Q = int(input())
 
 tmp = list(map(int, input().split()))
 N, M, P = tmp[1], tmp[2], tmp[3]
 # MATRIX = [[0 for i in range(M)] for _ in range(N)]
 
-RABBIT = []
-# [0, 0, 0, 0, 10, 0, 2]
-# [0, 0, 0, 0, 20, 0, 5]
+# heapq.heappush(heap, 50)
+# heapq.heappush(heap, item) : item을 heap에 추가
+# heapq.heappop(heap) : heap에서 가장 작은 원소를 pop & 리턴. 비어 있는 경우 IndexError가 호출됨. 
+# heapq.heapify(x) : 리스트 x를 즉각적으로 heap으로 변환함 (in linear time, O(N) )
+
+
+# 토끼 선정용
+RABBIT1 = []
+# 점수만 별도 저장
+SCORE = {}
+
 for i in range(4, len(tmp), 2):
-    # [점프횟수, 행+열, 행, 열, pid, 점수, d]
-    RABBIT.append([0, 0, 0, 0, tmp[i], 0, tmp[i+1]])
+    # [점프횟수, 행+열, 행, 열, pid, d]
+    heapq.heappush(RABBIT1, [0, 0, 0, 0, tmp[i], tmp[i+1]])
+    SCORE[tmp[i]] = 0
+
 
 ORDER = [list(map(int, input().split())) for _ in range(Q-1)]
 
@@ -27,10 +39,10 @@ def change_dir(d):
 def move_rabbit():
     # 200 명령에서 사용
     # 상하좌우로 d만큼 이동시켜보고 우선순위 높은 거 선택해서 이동 
-    global RABBIT
-    cnt, rc, origin_r, origin_c, pid, score, dis = RABBIT[0]
+    global RABBIT1
+    cnt, rc, origin_r, origin_c, pid, dis = heapq.heappop(RABBIT1)
+
     next_pos = []
-    # 상
     for d in range(4): # d번 돌아보기
         # d는 상우하좌 중 하나
         r, c = origin_r, origin_c
@@ -44,38 +56,57 @@ def move_rabbit():
     
     next_pos.sort(key = lambda x: (-(x[0]+x[1]), -x[0], -x[1]))
     nr, nc = next_pos[0]
-    RABBIT[0][0] += 1
-    RABBIT[0][1], RABBIT[0][2], RABBIT[0][3] = nr+nc, nr, nc 
-    # print('RABBIT[0]', RABBIT[0])
-    return nr+nc
+    heapq.heappush(RABBIT1, [cnt+1, nr+nc, nr, nc, pid, dis])
+    return pid, nr+nc
 
 for order in ORDER:
     if order[0] == 200:
         K, S = order[1], order[2]
         for _ in range(K):
             # 토끼 한마리 골라 이동
-            RABBIT.sort()
-            rc = move_rabbit()
+            pid, rc = move_rabbit()
             # 나머지 토끼들 rc점 획득
-            for i in range(1, len(RABBIT)):
-                RABBIT[i][5] += rc+2
+            for i in SCORE:
+                if i != pid:
+                    SCORE[i] += rc+2
         # 우선순위 높은 토끼 골라 S점 추가
-        RABBIT.sort(key = lambda x: (-x[1], -x[2], -x[3], -x[4], -x[0]))
-        if RABBIT[0][0] != 0:
-            RABBIT[0][5] += S
-    if order[0] == 300:
+        # 토끼 찾기
+        nrc, nr, nc, npid = 0, 0, 0, 0
+        for cnt, rc, r, c, pid, dis in RABBIT1:
+            if cnt == 0:
+                continue
+            if rc > nrc:
+                nrc, nr, nc, npid = rc, r, c, pid
+            elif rc == nrc and r > nr:
+                nrc, nr, nc, npid = rc, r, c, pid
+            elif rc == nrc and r == nr and c > nc:
+                nrc, nr, nc, npid = rc, r, c, pid
+            elif rc == nrc and r == nr and c == nc and pid > npid:
+                nrc, nr, nc, npid = rc, r, c, pid
+        # S점 추가
+        for i in range(len(RABBIT1)):
+            cnt, rc, r, c, pid, dis = RABBIT1[i]
+            if pid == npid:
+                SCORE[pid] += S
+                break
+        # print('200후 점수')
+        # print(SCORE)
+    elif order[0] == 300:        
         pid_t, L = order[1], order[2]
         # pid가 pid_t인 토끼의 dis를 L배
-        for i in range(len(RABBIT)):
-            if RABBIT[i][4] == pid_t:
-                RABBIT[i][6] *= L
-    if order[0] == 400:
+        for i in range(len(RABBIT1)):
+            cnt, rc, r, c, pid, dis = RABBIT1[i]
+            if pid == pid_t:
+                RABBIT1[i][5] *= L
+                break
+    elif order[0] == 400:
         break
+# print(RABBIT1)
+# print(SCORE)
 
 # 토끼 최대 점수 출력
 ANSWER = 0
-for i in range(len(RABBIT)):
-    if RABBIT[i][5] > ANSWER:
-        ANSWER = RABBIT[i][5]
-
+for pid in SCORE:
+    if SCORE[pid] > ANSWER:
+        ANSWER = SCORE[pid]
 print(ANSWER)
