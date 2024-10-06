@@ -43,7 +43,7 @@ def bfs(x, y):
         for i in range(4):
             nr, nc = r+dx[i], c+dy[i]
             if in_range(nr, nc) and not visited[nr][nc] and MATRIX[nr][nc] != 1\
-                and MIN_DIS_MATRIX[nr][nc] > dis+1 and MATRIX[nr][nc] != 2:
+                and MIN_DIS_MATRIX[nr][nc] > dis+1:
                 q.append((nr, nc, dis+1))
                 visited[nr][nc] = True
                 MIN_DIS_MATRIX[nr][nc] = dis+1
@@ -52,14 +52,15 @@ backtracking(0, [])
 ANSWER = 1e9 # 모든 바이러스를 없애는 데 걸린 최소 시간 (이게 2500이면 제거 못한 거)
 # 백트 돌고 나면 SELECTED_HOSPITAL_PAIRS 세팅 완료
 for pairs in SELECTED_HOSPITAL_PAIRS:
-    MIN_DIS_MATRIX = [[2500 for _ in range(N)] for _ in range(N)]
+    MIN_DIS_MATRIX = [[1e9 for _ in range(N)] for _ in range(N)]
     for hospital_num in pairs:
         x, y = HOSPITALS[hospital_num]
         # 각 병원에 대해서는 최소 거리를 0으로 세팅해 놔야 함
         MIN_DIS_MATRIX[x][y] = 0
         bfs(x, y) # MIN_DIS_MATRIX 위에, 벽이 없는 길만 검사하면서 최소 이동 거리 갱신
     # for _ in MIN_DIS_MATRIX:
-        # print(_)
+    #     print(_)
+    # print()
     # 자 이제 제거되지 않은 바이러스 있는지 확인
     # =============== 여기 할 차례 =======
     max_dis = 0
@@ -71,6 +72,6 @@ for pairs in SELECTED_HOSPITAL_PAIRS:
     ANSWER = max_dis if max_dis < ANSWER else ANSWER
     # print('ANSWER', ANSWER)
 
-if ANSWER == 2500:
+if ANSWER == 1e9:
     ANSWER = -1
 print(ANSWER)
