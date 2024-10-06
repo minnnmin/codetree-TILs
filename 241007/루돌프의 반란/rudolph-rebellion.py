@@ -92,38 +92,27 @@ for turn in range(1, M+1):
             dis_to_santa = dis
             move_dir = i
     RX, RY = nrx, nry
-    # 만약 이 자리에 산타가 있다? => 충돌
     if MATRIX[RX][RY] > 0:
         # 충돌!
-        # 충돌한 산타의 번호, 위치
         sid, sx, sy = MATRIX[RX][RY], SANTA_POS[MATRIX[RX][RY]][0], SANTA_POS[MATRIX[RX][RY]][1]
         PASS_OUT[sid] = turn+2
         SCORE[sid] += C
         MATRIX[sx][sy] = 0
         nsx, nsy = sx+dx[move_dir]*C, sy+dy[move_dir]*C
-        # print(nsx, nsy)
         if not in_range(nsx, nsy):
             # 탈락
             GAME_OVER[sid] = True
             SANTA_POS[sid][0], SANTA_POS[sid][1] = nsx, nsy
         else:
-            # 상호작용 가능성 있는지 확인
             if MATRIX[nsx][nsy] == 0:
                 MATRIX[nsx][nsy] = sid
                 SANTA_POS[sid][0], SANTA_POS[sid][1] = nsx, nsy
             else:
                 # 상호작용 처리
                 interaction(sid, nsx, nsy, move_dir)
-    # print('루돌프 이동 후 MATRIX')
-    # for _ in MATRIX:
-    #     print(_)
-    # print('루돌프 이동 후 SANTA_POS')
-    # print(SANTA_POS)
-    # print('루돌프 이동 후 위치', RX, RY)
     # === 2. 산타 이동 ===
     for sid in range(1, P+1):
         if not PASS_OUT[sid] and not GAME_OVER[sid]:
-            # print(turn, '에', sid, '산타 간다')
             sx, sy = SANTA_POS[sid]
             dis_to_rudolph = 1e9
             move_dir = -1
@@ -136,10 +125,7 @@ for turn in range(1, M+1):
                 if dis < now_dis and dis < dis_to_rudolph:
                     dis_to_rudolph = dis
                     move_dir = i
-            # print(sid, '산타의', sx, sy, now_dis, dis_to_rudolph, move_dir)
             if move_dir != -1:
-                # move_dir 방향으로 이동해야 함
-                # 이동했는데 루돌프랑 만나면?
                 MATRIX[sx][sy] = 0
                 nsx, nsy = sx+dx[move_dir], sy+dy[move_dir]
                 if not in_range(nsx, nsy):
@@ -163,23 +149,13 @@ for turn in range(1, M+1):
                         MATRIX[sx][sy] = 0
                         MATRIX[nsx][nsy] = sid
                         SANTA_POS[sid][0], SANTA_POS[sid][1] = nsx, nsy
-                    else: # 상호작용
-                        # 충돌당한 산타의 번호와 새로 가려는 위치와 방향
+                    else:
+                        # 상호작용
                         interaction(sid, nsx, nsy, move_dir)
     for i in range(1, P+1):
         if GAME_OVER[i]:
             continue
         SCORE[i] += 1
-    # if turn > 4:
-    #     print(turn, '턴')
-    #     print('점수', SCORE)
-    #     print('루돌프 위치', RX, RY)
-    #     print('산타 이동 후 MATRIX')
-    #     for _ in MATRIX:
-    #         print(_)
-    #     print('산타 이동 후 SANTA_POS')
-    #     print(SANTA_POS)
-    #     print('산타 이동 후 루돌프 위치', RX, RY)
 
 for i in range(1, P+1):
     print(SCORE[i], end = ' ')
