@@ -2,7 +2,7 @@ Q = int(input())
 
 tmp = list(map(int, input().split()))
 N, M, P = tmp[1], tmp[2], tmp[3]
-MATRIX = [[0 for i in range(M)] for _ in range(N)]
+# MATRIX = [[0 for i in range(M)] for _ in range(N)]
 
 RABBIT = []
 # [0, 0, 0, 0, 10, 0, 2]
@@ -40,7 +40,7 @@ def move_rabbit():
                 d = change_dir(d)
                 nr, nc = r+dx[d], c+dy[d]
             r, c = nr, nc
-        next_pos.append((nr, nc))
+        next_pos.append((r, c))
     
     next_pos.sort(key = lambda x: (-(x[0]+x[1]), -x[0], -x[1]))
     nr, nc = next_pos[0]
@@ -59,23 +59,16 @@ for order in ORDER:
             # 나머지 토끼들 rc점 획득
             for i in range(1, len(RABBIT)):
                 RABBIT[i][5] += rc+2
-                # print(RABBIT[0])
-                # print(RABBIT[1])
         # 우선순위 높은 토끼 골라 S점 추가
         RABBIT.sort(key = lambda x: (-x[1], -x[2], -x[3], -x[4], -x[0]))
         if RABBIT[0][0] != 0:
             RABBIT[0][5] += S
-        # print('200 후')
-        # print(RABBIT[0])
-        # print(RABBIT[1])
     if order[0] == 300:
         pid_t, L = order[1], order[2]
         # pid가 pid_t인 토끼의 dis를 L배
         for i in range(len(RABBIT)):
             if RABBIT[i][4] == pid_t:
                 RABBIT[i][6] *= L
-    # print(RABBIT[0])
-    # print(RABBIT[1])
     if order[0] == 400:
         break
 
