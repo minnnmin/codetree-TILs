@@ -4,7 +4,6 @@ for i in range(4, 10):
     for j in range(4, 10):
         MATRIX[i][j] = -1
 
-
 K = int(input())
 ORDER = [list(map(int, input().split())) for _ in range(K)]
 SCORE = 0
@@ -90,7 +89,6 @@ def check_game():
                     MATRIX[0][col], MATRIX[1][col], MATRIX[2][col], MATRIX[3][col]
 
 
-
 def check_overflow():
     global MATRIX
 
@@ -119,26 +117,10 @@ def check_overflow():
                 MATRIX[0][col], MATRIX[1][col], MATRIX[2][col], MATRIX[3][col]
 
 
-
 for turn, (t, x, y) in enumerate(ORDER):
     move_block(t, x, y)
-    # print('이동 후')
-    # for _ in MATRIX:
-    #     print(_)
-    # print()
     check_game()
-    # print('한줄 차서 처리한 후')
-    # for _ in MATRIX:
-    #     print(_)
-    # print()
     check_overflow()
-    # print('오버플로우 처리 후')
-    # for _ in MATRIX:
-    #     print(_)
-    # print()
-    # print(t, x, y)
-    # for _ in MATRIX:
-    #     print(_)
 
 cnt = 0
 for i in range(10):
