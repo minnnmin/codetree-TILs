@@ -50,6 +50,7 @@ def thieves_move(matrix, thieves_info, tag_pos):
                 # 이동 가능
                 if matrix[nx][ny] == 0:
                     matrix[nx][ny] = tid
+                    matrix[x][y] = 0
                     thieves_info[tid] = (nx, ny, d)
                 else: # 다른 도둑이 있었다면 자리 교환
                     next_tid = matrix[nx][ny]
@@ -61,19 +62,17 @@ def thieves_move(matrix, thieves_info, tag_pos):
 
 # dfs
 def game_play(tag_pos, tag_dir, matrix, thieves_info, score):
-    
     global ANSWER
 
     if score > ANSWER:
         ANSWER = score
-
-    # 종료 조건?
 
     # 도둑 이동
     thieves_move(matrix, thieves_info, tag_pos)
 
     # 술래 이동
     for i in range(1, 4):
+        # print(tag_dir)
         nx, ny = tag_pos[0]+dx[tag_dir]*i, tag_pos[1]+dy[tag_dir]*i
         if in_range(nx, ny) and matrix[nx][ny] > 0:
             new_matrix = deepcopy(matrix)
