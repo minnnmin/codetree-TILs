@@ -92,12 +92,16 @@ def del_monsters():
                 elif MATRIX[now_x][now_y] == 0:
                     if cnt >= 4:
                         SCORE += now_monster*cnt
+                        for x, y in group:
+                            MATRIX[x][y] = 0
                         deleted = True
                     return deleted
                 move_d = DIR_MATRIX[now_x][now_y]
             D = (D-1)%4
     if cnt >= 4:
         SCORE += now_monster*cnt
+        for x, y in group:
+            MATRIX[x][y] = 0
         deleted = True
     return deleted
 
