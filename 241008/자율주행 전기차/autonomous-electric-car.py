@@ -128,4 +128,6 @@ while True:
     # print('턴 종료 후 맵')
     # for _ in MATRIX:
     #     print(_)
+if BATTERY < 0:
+    BATTERY = -1
 print(BATTERY)
