@@ -75,8 +75,7 @@ def gravity_work():
 
 # 반시계 90도 회전
 def rotate():
-    global MATRIX
-    new_matrix = [[0 for _ in range(N)] for _ in range(N)]
+    global MATRIX, new_matrix
 
     for t in range((N+1)//2):
         # 위 <- 오
@@ -139,6 +138,7 @@ while True:
     # print('중력 후 M')
     # for _ in MATRIX:
     #     print(_)
+    new_matrix = [[0 for _ in range(N)] for _ in range(N)]
     rotate()
     # print('회전 후 M')
     # for _ in MATRIX:
