@@ -1,3 +1,5 @@
+from collections import deque
+
 N, M = map(int, input().split())
 MATRIX = [list(map(int, input().split())) for _ in range(N)]
 
@@ -10,7 +12,6 @@ dy = [0, 0, -1, 1]
 def in_range(x, y):
     return -1 < x < N and -1 < y < N
 
-
 # 기준점 찾기 - 그룹에 포함된 좌표들 전부 넣어주면 기준점 찾아줌
 def find_point(group):
     point_x, point_y = -1, -1
@@ -20,9 +21,6 @@ def find_point(group):
         if x > point_x or (x == point_x and y < point_y):
             point_x, point_y = x, y
     return point_x, point_y
-
-
-from collections import deque
 
 q = deque()
 
@@ -96,9 +94,8 @@ def rotate():
         for j in range(N):
             MATRIX[i][j] = new_matrix[i][j]
 
-# i = 0
+
 while True:
-    # print(i, 'turn')
     ''' === 1. 폭탄 그룹 찾기 === '''
     visited = [[False for _ in range(N)] for _ in range(N)]
     GROUP_INFO = []
@@ -132,29 +129,14 @@ while True:
         (b_member+red_member == max_b_member+max_red_member and max_red_member == red_member and max_point_pos[0] == point_pos[0] and max_point_pos[1] > point_pos[1]):
             max_bid, max_b_member, max_red_member, max_point_pos, max_group =\
                 bid, b_member, red_member, point_pos, group
-    # print('선택된', max_bid, max_b_member, max_red_member, max_point_pos, max_group)
     # 폭탄 제거
     for x, y in max_group:
         MATRIX[x][y] = 'e' # empty
     SCORE += (max_b_member+max_red_member)**2
-    # print('제거 후 M')
-    # for _ in MATRIX:
-    #     print(_)
     # 중력 작용
     gravity_work()
-    # print('중력 후 M')
-    # for _ in MATRIX:
-    #     print(_)
     new_matrix = [[0 for _ in range(N)] for _ in range(N)]
     rotate()
-    # print('회전 후 M')
-    # for _ in MATRIX:
-    #     print(_)
     # 중력 작용
     gravity_work()
-    # print('중력 후 M')
-    # for _ in MATRIX:
-    #     print(_)
-    # print(SCORE)
-    i += 1
 print(SCORE)
