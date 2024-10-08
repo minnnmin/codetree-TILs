@@ -47,6 +47,7 @@ def find_group(x, y):
                     visited[nr][nc] = True
                 elif MATRIX[nr][nc] == 0: # red
                     red_member += 1
+                    visited[nr][nc] = True
                 else:
                     continue
                 q.append((nr, nc))
@@ -95,8 +96,9 @@ def rotate():
         for j in range(N):
             MATRIX[i][j] = new_matrix[i][j]
 
-
+# i = 0
 while True:
+    # print(i, 'turn')
     ''' === 1. 폭탄 그룹 찾기 === '''
     visited = [[False for _ in range(N)] for _ in range(N)]
     GROUP_INFO = []
@@ -104,8 +106,13 @@ while True:
         for j in range(N):
             # 방문 전이고 돌이 아니고 빨간색도 아니고 빈곳도 아니면
             if not visited[i][j] and MATRIX[i][j] != 'e' and MATRIX[i][j] > 0:
+                # print(i, j)
                 bid, b_member, red_member, point_pos, group = find_group(i, j)
                 GROUP_INFO.append((bid, b_member, red_member, point_pos, group))
+                # red_방문처리 철회
+                for x, y in group:
+                    if MATRIX[x][y] == 0:
+                        visited[x][y] = False
     # 만약 여기서 그룹이 없다면 break
     GAME_OVER = True
     for bid, b_member, red_member, point_pos, group in GROUP_INFO:
@@ -114,18 +121,18 @@ while True:
             break
     if GAME_OVER:
         break
-
     ''' === 2. 폭탄 제거 === '''
     # 폭탄 선택
     max_member = 0
     max_bid, max_b_member, max_red_member, max_point_pos, max_group = -1, 0, 0, (-1, -1), []
     for bid, b_member, red_member, point_pos, group in GROUP_INFO:
-        if b_member+red_member > max_member or\
-        (b_member+red_member == max_member and max_red_member > red_member) or\
-        (b_member+red_member == max_member and max_red_member == red_member and max_point_pos[0] < point_pos[0]) or\
-        (b_member+red_member == max_member and max_red_member == red_member and max_point_pos[0] == point_pos[0] and max_point_pos[1] > point_pos[1]):
+        if b_member+red_member > max_b_member+max_red_member or\
+        (b_member+red_member == max_b_member+max_red_member and max_red_member > red_member) or\
+        (b_member+red_member == max_b_member+max_red_member and max_red_member == red_member and max_point_pos[0] < point_pos[0]) or\
+        (b_member+red_member == max_b_member+max_red_member and max_red_member == red_member and max_point_pos[0] == point_pos[0] and max_point_pos[1] > point_pos[1]):
             max_bid, max_b_member, max_red_member, max_point_pos, max_group =\
                 bid, b_member, red_member, point_pos, group
+    # print('선택된', max_bid, max_b_member, max_red_member, max_point_pos, max_group)
     # 폭탄 제거
     for x, y in max_group:
         MATRIX[x][y] = 'e' # empty
@@ -149,4 +156,5 @@ while True:
     # for _ in MATRIX:
     #     print(_)
     # print(SCORE)
+    i += 1
 print(SCORE)
