@@ -115,7 +115,6 @@ while True:
     MATRIX[x][y] = 0
     CAR_POS = (x, y)
     # 2. 목적지로 데려다주기
-    # PASSENGER_DEST[pid] 로 데려다 줘야 함
     move_dis = ride(pid)
     # print('목적지까지 거리', move_dis)
     BATTERY -= move_dis
@@ -129,5 +128,12 @@ while True:
     # for _ in MATRIX:
     #     print(_)
 if BATTERY < 0:
+    BATTERY = -1
+ALL_FINISHED = True
+for i in range(1, M+1):
+    if FINISHED[i] == 0:
+        ALL_FINISHED = False
+        break
+if not ALL_FINISHED:
     BATTERY = -1
 print(BATTERY)
