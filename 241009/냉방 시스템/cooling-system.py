@@ -41,6 +41,8 @@ def wind_right(air_x, air_y):
     q.append((fx, fy, 5))
     while q:
         x, y, wind_cnt = q.popleft()
+        if wind_cnt == 0:
+            break
         # 45도 위(위->오)
         # 검사할 벽: 내자리 위쪽에 벽이 있는가, x-1 y+1 자리 왼쪽에 벽이 있는가
         if in_range(x-1, y) and in_range(x-1, y+1) and not visited[x-1][y+1] and (0 not in  WALL[x][y]) and (1 not in WALL[x-1][y+1]):
@@ -73,6 +75,8 @@ def wind_left(air_x, air_y):
     q.append((fx, fy, 5))
     while q:
         x, y, wind_cnt = q.popleft()
+        if wind_cnt == 0:
+            break
         # 45도 위(위->왼)
         # 검사할 벽: 내자리 위쪽에 벽이 있는가, x-1, y 자리 왼쪽에 벽이 있는가
         if in_range(x-1, y) and in_range(x-1, y-1) and not visited[x-1][y-1] and (0 not in  WALL[x][y]) and (1 not in WALL[x-1][y]):
@@ -105,6 +109,8 @@ def wind_up(air_x, air_y):
     q.append((fx, fy, 5))
     while q:
         x, y, wind_cnt = q.popleft()
+        if wind_cnt == 0:
+            break
         # 45도 왼(왼->위)
         # 검사할 벽: 내자리 왼쪽에 벽이 있는가, x, y-1 자리 위쪽에 벽이 있는가
         if in_range(x, y-1) and in_range(x-1, y-1) and not visited[x-1][y-1] and (1 not in  WALL[x][y]) and (0 not in WALL[x][y-1]):
@@ -137,6 +143,8 @@ def wind_down(air_x, air_y):
     q.append((fx, fy, 5))
     while q:
         x, y, wind_cnt = q.popleft()
+        if wind_cnt == 0:
+            break
         # 45도 왼(왼->아래)
         # 검사할 벽: 내자리 왼쪽에 벽이 있는가, x+1, y-1 자리 위쪽에 벽이 있는가
         if in_range(x, y-1) and in_range(x+1, y-1) and not visited[x+1][y-1] and (1 not in  WALL[x][y]) and (0 not in WALL[x+1][y-1]):
@@ -216,10 +224,23 @@ for minutes in range(1, 101):
     if minutes == 100:
         minutes = -1
         break
+    # print('이동 전')
+    # for _ in WIND:
+    #     print(_)
+    # print()
     ''' 1. 에어컨 작동 '''
     air_cond_work()
+    # print('이동 후')
+    # for _ in WIND:
+    #     print(_)
+    # print()
+
     ''' 2. 공기 섞임 '''
     mix_air()
+    # print('섞인 후')
+    # for _ in WIND:
+    #     print(_)
+    # print()
     ''' 3. 외벽칸 시원함 1 감소 '''
     # 맨 위, 맨 아래
     for i in range(N):
@@ -239,9 +260,6 @@ for minutes in range(1, 101):
         if WIND[x][y] < K:
             ALL_COOL = False
             break
-
-    # for _ in WIND:
-        # print(_)
 
     if ALL_COOL:
         break
