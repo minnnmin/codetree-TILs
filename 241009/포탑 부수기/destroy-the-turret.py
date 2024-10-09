@@ -46,15 +46,17 @@ def laser_attack(x, y, tx, ty):
         x, y, dis, history = q.popleft()
         if (x, y) == (tx, ty):
             if dis < dis_to_target or (dis == dis_to_target and history < move_history):
+                # history.pop()
                 move_history = history
                 dis_to_target = dis
                 CAN_ATTACK = True
-        for i in range(0, 8, 2): # 상하좌우만 검사
-            nx, ny = x+dx[i], y+dy[i]
-            nx, ny = fix_pos(nx, ny)
-            if not BROKEN[nx][ny] and not visited[nx][ny]:
-                q.append((nx, ny, dis+1, history + [i]))
-                visited[nx][ny] = True
+        else:
+            for i in range(0, 8, 2): # 상하좌우만 검사
+                nx, ny = x+dx[i], y+dy[i]
+                nx, ny = fix_pos(nx, ny)
+                if not BROKEN[nx][ny] and not visited[nx][ny]:
+                    q.append((nx, ny, dis+1, history + [i]))
+                    visited[nx][ny] = True
 
     return CAN_ATTACK, move_history
 
@@ -98,10 +100,12 @@ for turn in range(1, K+1):
     # === 공격 ===
     # bfs 돌려서 목적지에 닿을 수 있다면 공격 가능 (이때 지나온 좌표 모두 기억)
     CAN_ATTACK, move_history = laser_attack(min_pos[0], min_pos[1], max_pos[0], max_pos[1])
+    # print(CAN_ATTACK)
     # print('공격 전')
     # for _ in MATRIX:
     #     print(_)
     if CAN_ATTACK: # 레이저 공격 실행
+        # print('레이저')
         x, y = min_pos[0], min_pos[1]
         power = MATRIX[x][y]
         # 목표 포탑 공격
@@ -109,19 +113,25 @@ for turn in range(1, K+1):
         attack_related[max_pos[0]][max_pos[1]] = 1
         if MATRIX[max_pos[0]][max_pos[1]] <= 0:
             BROKEN[max_pos[0]][max_pos[1]] = 1
+        move_history.pop()
+        # print(move_history)
         # 지나온 애들도 공격
-        for d in move_history[1:-1]:
+        for d in move_history[1:]:
             x, y = x+dx[d], y+dy[d]
+            x, y = fix_pos(x, y)
             MATRIX[x][y] -= power//2
             attack_related[x][y] = 1
             if MATRIX[x][y] <= 0:
                 BROKEN[x][y] = 1
     else: # 포탄 공격 실행
+        # print('포탄')
         x, y = min_pos[0], min_pos[1]
         power = MATRIX[x][y]
         # 목표 포탑 공격
         mx, my = max_pos[0], max_pos[1]
         MATRIX[mx][my] -= power
+        if MATRIX[max_pos[0]][max_pos[1]] <= 0:
+            BROKEN[max_pos[0]][max_pos[1]] = 1
         attack_related[max_pos[0]][max_pos[1]] = 1
         # 주위 8방향 애들도 공격
         for i in range(8):
