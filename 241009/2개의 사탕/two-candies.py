@@ -55,7 +55,6 @@ def play_game(move_list):
             return
         # print('hi2', d)
         if d == 'UP':
-            # print('hi3')
             # 만약 빨파의 열이 같으면 행 작은 애 먼저이동
             # 아니면 각자 ++
             # print(rx, ry, bx, by)
@@ -75,8 +74,6 @@ def play_game(move_list):
                             break
                         else:
                             break
-                    # for _ in new_matrix:
-                    #     print(_)
                     for _ in range(N):
                         nbx, nby = bx+dx[0], by+dy[0]
                         if new_matrix[nbx][nby] == '.':
@@ -160,6 +157,9 @@ def play_game(move_list):
                     # for _ in new_matrix:
                     #     print(_)
                     return
+            # print('up 종료')
+            # for _ in new_matrix:
+            #     print(_)
         elif d == 'DOWN':
             # 만약 빨파의 열이 같으면 행 큰 애 먼저이동
             # 아니면 각자 ++
@@ -404,7 +404,7 @@ def play_game(move_list):
                             return
                         else:
                             break
-                elif ry < by: # 빨강이 오른쪽에 있으면 빨강 먼저
+                elif ry > by: # 빨강이 오른쪽에 있으면 빨강 먼저
                     red_finished = False
                     for _ in range(M):
                         nrx, nry = rx+dx[3], ry+dy[3]
@@ -474,6 +474,9 @@ def play_game(move_list):
                     # for _ in new_matrix:
                     #     print(_)
                     return
+            # print('right 종료')
+            # for _ in new_matrix:
+            #     print(_)
 
     # print('아무도 탈출 못함')      
     # for _ in new_matrix:
@@ -482,7 +485,7 @@ def play_game(move_list):
 
 make_dir_list(0, [])
 # print(MOVE_LIST)
-# MOVE_LIST = [('UP', 'DOWN')]
+# MOVE_LIST = [('UP', 'RIGHT', 'DOWN', 'LEFT', 'DOWN', 'RIGHT'), ]
 for move_list in MOVE_LIST:
     play_game(move_list)
 
