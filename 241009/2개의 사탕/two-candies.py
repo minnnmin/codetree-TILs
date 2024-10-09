@@ -254,6 +254,9 @@ def play_game(move_list):
                     # for _ in new_matrix:
                     #     print(_)
                     return
+            # print('down 후')
+            # for _ in new_matrix:
+            #     print(_)
         elif d == 'LEFT':
             # 만약 빨파의 행이 같으면 열 작은 애 먼저이동 -> 만약 이때 red가 exit이랑 같아지면 blue도 거기 가는 거라 break
             # 아니면 각자 열--
@@ -294,6 +297,7 @@ def play_game(move_list):
                             ANSWER = cnt+1
                         return
                 elif ry > by: # 파랑 먼저
+                    # print('파랑 먼저 진행')
                     for _ in range(M):
                         nbx, nby = bx+dx[2], by+dy[2]
                         if new_matrix[nbx][nby] == '.':
@@ -306,7 +310,7 @@ def play_game(move_list):
                         else:
                             break
                     for _ in range(M):
-                        nrx, nry = rx+dx[3], ry+dy[3]
+                        nrx, nry = rx+dx[2], ry+dy[2]
                         if new_matrix[nrx][nry] == '.':
                             new_matrix[rx][ry] = '.'
                             new_matrix[nrx][nry] = 'R'
@@ -318,7 +322,10 @@ def play_game(move_list):
                                 ANSWER = cnt+1
                             return
                         else:
-                            break            
+                            break  
+                    # print('파랑 다음 빨강 후')
+                    # for _ in new_matrix:
+                    #     print(_)
             else:
                 # 빨강 이동
                 red_finished = False
@@ -356,6 +363,9 @@ def play_game(move_list):
                     # for _ in new_matrix:
                     #     print(_)
                     return
+            # print('left 후')
+            # for _ in new_matrix:
+            #     print(_)
         elif d == 'RIGHT':
             # 만약 빨파의 행이 같으면 열 큰 애 먼저이동 -> 만약 이때 red가 exit이랑 같아지면 blue도 거기 가는 거라 break
             # 아니면 각자 열++
@@ -457,14 +467,14 @@ def play_game(move_list):
                     #     print(_)
                     return
 
-    # print('아무도 탈출 못함')      
-    # for _ in new_matrix:
-    #     print(_)
+    print('아무도 탈출 못함')      
+    for _ in new_matrix:
+        print(_)
 
 
-make_dir_list(0, [])
+# make_dir_list(0, [])
 # print(MOVE_LIST)
-
+MOVE_LIST = [('LEFT', 'DOWN', 'LEFT', 'DOWN')]
 for move_list in MOVE_LIST:
     play_game(move_list)
 
