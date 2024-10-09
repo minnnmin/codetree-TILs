@@ -75,6 +75,8 @@ for turn in range(K):
                 min_power = MATRIX[i][j]
                 min_pos = (i, j)
                 latest_attack_turn = LATEST_ATTACK_TURN[i][j]
+    if min_pos == (-1, -1):
+        break
     LATEST_ATTACK_TURN[min_pos[0]][min_pos[1]] = turn # 최근 공격한 턴 정보 갱신
     MATRIX[min_pos[0]][min_pos[1]] += N + M
     attack_related[min_pos[0]][min_pos[1]] = 1
