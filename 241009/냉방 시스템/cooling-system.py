@@ -6,10 +6,9 @@ MATRIX = [list(map(int, input().split())) for _ in range(N)]
 for i in range(N):
     for j in range(N):
         if MATRIX[i][j] >= 2:
-            AIR_COND_INFO.append((i, j, MATRIX[i][j]%4))
+            AIR_COND_INFO.append((i, j, (MATRIX[i][j])%4))
         elif MATRIX[i][j] == 1:
             OFFICE.append((i, j))
-
 
 WIND = [[0 for _ in range(N)] for _ in range(N)] # 바람의 양
 
@@ -47,21 +46,24 @@ def wind_right(air_x, air_y):
             break
         # 45도 위(위->오)
         # 검사할 벽: 내자리 위쪽에 벽이 있는가, x-1 y+1 자리 왼쪽에 벽이 있는가
-        if in_range(x-1, y) and in_range(x-1, y+1) and not visited[x-1][y+1] and (0 not in  WALL[x][y]) and (1 not in WALL[x-1][y+1]):
+        if in_range(x-1, y) and in_range(x-1, y+1) and not visited[x-1][y+1] and (0 not in WALL[x][y]) and (1 not in WALL[x-1][y+1]):
             WIND[x-1][y+1] += wind_cnt-1
-            q.append((x-1, y+1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x-1, y+1, wind_cnt-1))
             visited[x-1][y+1] = True
         # 직진
         # 검사할 벽: x, y+1 자리 왼쪽에 벽이 있는가
         if in_range(x, y+1) and not visited[x][y+1] and (1 not in WALL[x][y+1]):
             WIND[x][y+1] += wind_cnt-1
-            q.append((x, y+1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x, y+1, wind_cnt-1))
             visited[x][y+1] = True
         # 45도 아래(아래->오)
         # 검사할 벽: x+1, y 위쪽에 벽이 있는가, x+1 y+1 자리 왼쪽에 벽이 있는가
         if in_range(x+1, y) and in_range(x+1, y+1) and not visited[x+1][y+1] and (0 not in WALL[x+1][y]) and (1 not in WALL[x+1][y+1]):
             WIND[x+1][y+1] += wind_cnt-1
-            q.append((x+1, y+1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x+1, y+1, wind_cnt-1))
             visited[x+1][y+1] = True
 
 
@@ -85,19 +87,22 @@ def wind_left(air_x, air_y):
         # 검사할 벽: 내자리 위쪽에 벽이 있는가, x-1, y 자리 왼쪽에 벽이 있는가
         if in_range(x-1, y) and in_range(x-1, y-1) and not visited[x-1][y-1] and (0 not in  WALL[x][y]) and (1 not in WALL[x-1][y]):
             WIND[x-1][y-1] += wind_cnt-1
-            q.append((x-1, y-1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x-1, y-1, wind_cnt-1))
             visited[x-1][y-1] = True
         # 직진
         # 검사할 벽: 내자리 왼쪽에 벽이 있는가
         if in_range(x, y-1) and not visited[x][y-1] and (1 not in WALL[x][y]):
             WIND[x][y-1] += wind_cnt-1
-            q.append((x, y-1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x, y-1, wind_cnt-1))
             visited[x][y-1] = True
         # 45도 아래(아래->왼)
         # 검사할 벽: x+1, y 위쪽에 벽이 있는가, x+1 y 자리 왼쪽에 벽이 있는가
         if in_range(x+1, y) and in_range(x+1, y-1) and not visited[x+1][y-1] and (0 not in WALL[x+1][y]) and (1 not in WALL[x+1][y]):
             WIND[x+1][y-1] += wind_cnt-1
-            q.append((x+1, y-1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x+1, y-1, wind_cnt-1))
             visited[x+1][y-1] = True
 
 
@@ -121,19 +126,22 @@ def wind_up(air_x, air_y):
         # 검사할 벽: 내자리 왼쪽에 벽이 있는가, x, y-1 자리 위쪽에 벽이 있는가
         if in_range(x, y-1) and in_range(x-1, y-1) and not visited[x-1][y-1] and (1 not in  WALL[x][y]) and (0 not in WALL[x][y-1]):
             WIND[x-1][y-1] += wind_cnt-1
-            q.append((x-1, y-1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x-1, y-1, wind_cnt-1))
             visited[x-1][y-1] = True
         # 직진
         # 검사할 벽: 내자리 위쪽에 벽이 있는가
         if in_range(x-1, y) and not visited[x-1][y] and (0 not in WALL[x][y]):
             WIND[x-1][y] += wind_cnt-1
-            q.append((x-1, y, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x-1, y, wind_cnt-1))
             visited[x-1][y] = True
         # 45도 우(오->위)
         # 검사할 벽: x, y+1 왼쪽에 벽이 있는가, x, y+1 자리 위쪽에 벽이 있는가
-        if in_range(x, y+1) and in_range(x-1, y+1) and not visited[x-1][y+1] and (0 not in WALL[x][y+1]) and (1 not in WALL[x][y+1]):
+        if in_range(x, y+1) and in_range(x-1, y+1) and not visited[x-1][y+1] and (1 not in WALL[x][y+1]) and (0 not in WALL[x][y+1]):
             WIND[x-1][y+1] += wind_cnt-1
-            q.append((x-1, y+1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x-1, y+1, wind_cnt-1))
             visited[x-1][y+1] = True
 
 
@@ -155,21 +163,24 @@ def wind_down(air_x, air_y):
             break
         # 45도 왼(왼->아래)
         # 검사할 벽: 내자리 왼쪽에 벽이 있는가, x+1, y-1 자리 위쪽에 벽이 있는가
-        if in_range(x, y-1) and in_range(x+1, y-1) and not visited[x+1][y-1] and (1 not in  WALL[x][y]) and (0 not in WALL[x+1][y-1]):
+        if in_range(x, y-1) and in_range(x+1, y-1) and not visited[x+1][y-1] and (1 not in WALL[x][y]) and (0 not in WALL[x+1][y-1]):
             WIND[x+1][y-1] += wind_cnt-1
-            q.append((x+1, y-1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x+1, y-1, wind_cnt-1))
             visited[x+1][y-1] = True
         # 직진
         # 검사할 벽: x+1, y 위쪽에 벽이 있는가
         if in_range(x+1, y) and not visited[x+1][y] and (0 not in WALL[x+1][y]):
             WIND[x+1][y] += wind_cnt-1
-            q.append((x+1, y, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x+1, y, wind_cnt-1))
             visited[x+1][y] = True
         # 45도 우(오->아래)
         # 검사할 벽: x, y+1 왼쪽에 벽이 있는가, x+1, y+1 자리 위쪽에 벽이 있는가
-        if in_range(x, y+1) and in_range(x+1, y+1) and not visited[x-1][y+1] and (1 not in WALL[x][y+1]) and (0 not in WALL[x+1][y+1]):
+        if in_range(x, y+1) and in_range(x+1, y+1) and not visited[x+1][y+1] and (1 not in WALL[x][y+1]) and (0 not in WALL[x+1][y+1]):
             WIND[x+1][y+1] += wind_cnt-1
-            q.append((x+1, y+1, wind_cnt-1))
+            if wind_cnt-1 > 0:
+                q.append((x+1, y+1, wind_cnt-1))
             visited[x+1][y+1] = True
 
 
