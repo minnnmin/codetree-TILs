@@ -36,7 +36,7 @@ def laser_attack(x, y, tx, ty):
 
     visited = [[False for _ in range(M)] for _ in range(N)]
     visited[x][y] = True
-    q.append((x, y, 0, [])) # 마지막 인자는 이때까지 지나온 방향
+    q.append((x, y, 0, [None])) # 마지막 인자는 이때까지 지나온 방향
     move_history = [] # 이동 방향이 들어감!
     dis_to_target = 1e9
     CAN_ATTACK = False
@@ -59,8 +59,10 @@ def laser_attack(x, y, tx, ty):
     return CAN_ATTACK, move_history
 
 
-for turn in range(K):
+for turn in range(1, K+1):
     ''' 1. 공격할 포탑 선택 '''
+    # print()
+    # print(turn, '턴')
     attack_related = [[0 for _ in range(M)] for _ in range(N)]
     min_power = 5001
     min_pos = (-1, -1)
@@ -75,8 +77,6 @@ for turn in range(K):
                 min_power = MATRIX[i][j]
                 min_pos = (i, j)
                 latest_attack_turn = LATEST_ATTACK_TURN[i][j]
-    if min_pos == (-1, -1):
-        break
     LATEST_ATTACK_TURN[min_pos[0]][min_pos[1]] = turn # 최근 공격한 턴 정보 갱신
     MATRIX[min_pos[0]][min_pos[1]] += N + M
     attack_related[min_pos[0]][min_pos[1]] = 1
@@ -116,7 +116,7 @@ for turn in range(K):
         move_history.pop()
         # print(move_history)
         # 지나온 애들도 공격
-        for d in move_history:
+        for d in move_history[1:]:
             x, y = x+dx[d], y+dy[d]
             x, y = fix_pos(x, y)
             MATRIX[x][y] -= power//2
