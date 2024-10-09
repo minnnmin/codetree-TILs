@@ -224,6 +224,7 @@ for minutes in range(1, 101):
     if minutes == 100:
         minutes = -1
         break
+    # print(' ===== ', minutes, '분 ===== ')
     # print('이동 전')
     # for _ in WIND:
     #     print(_)
@@ -259,7 +260,19 @@ for minutes in range(1, 101):
     for x, y in OFFICE:
         if WIND[x][y] < K:
             ALL_COOL = False
+            # if minutes >= 16:
+            #     print('작아요', WIND[x][y], x, y)
             break
+    
+    # print('외벽 감소 후')
+    # for _ in WIND:
+    #     print(_)
+    # print()
+
+    # if minutes >= 16:
+    #     for _ in WIND:
+    #         print(_)
+    #     print()
 
     if ALL_COOL:
         break
