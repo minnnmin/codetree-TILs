@@ -33,6 +33,8 @@ def wind_right(air_x, air_y):
     global WIND
     air_d = 0
     fx, fy = air_x+dx[air_d], air_y+dy[air_d]
+    if not in_range(fx, fy):
+        return
     WIND[fx][fy] += 5
 
     visited = [[False for _ in range(N)] for _ in range(N)]
@@ -67,6 +69,8 @@ def wind_left(air_x, air_y):
     global WIND
     air_d = 2
     fx, fy = air_x+dx[air_d], air_y+dy[air_d]
+    if not in_range(fx, fy):
+        return
     WIND[fx][fy] += 5
 
     visited = [[False for _ in range(N)] for _ in range(N)]
@@ -101,6 +105,8 @@ def wind_up(air_x, air_y):
     global WIND
     air_d = 3
     fx, fy = air_x+dx[air_d], air_y+dy[air_d]
+    if not in_range(fx, fy):
+        return
     WIND[fx][fy] += 5
 
     visited = [[False for _ in range(N)] for _ in range(N)]
@@ -135,6 +141,8 @@ def wind_down(air_x, air_y):
     global WIND
     air_d = 1
     fx, fy = air_x+dx[air_d], air_y+dy[air_d]
+    if not in_range(fx, fy):
+        return
     WIND[fx][fy] += 5
 
     visited = [[False for _ in range(N)] for _ in range(N)]
