@@ -49,10 +49,16 @@ def play_game(move_list):
     rx, ry = RED
     bx, by = BLUE
     new_matrix = deepcopy(MATRIX)
+    # print(move_list)
     for cnt, d in enumerate(move_list):
+        if cnt > ANSWER:
+            return
+        # print('hi2', d)
         if d == 'UP':
+            # print('hi3')
             # 만약 빨파의 열이 같으면 행 작은 애 먼저이동
             # 아니면 각자 ++
+            # print(rx, ry, bx, by)
             if ry == by:
                 if rx < bx: # 빨강 먼저
                     red_finished = False
@@ -89,7 +95,7 @@ def play_game(move_list):
                         if ANSWER > cnt+1:
                             ANSWER = cnt+1
                         return
-                elif rx < bx: # 파랑 먼저
+                elif rx > bx: # 파랑 먼저
                     for _ in range(N):
                         nbx, nby = bx+dx[0], by+dy[0]
                         if new_matrix[nbx][nby] == '.':
@@ -101,6 +107,8 @@ def play_game(move_list):
                             return
                         else:
                             break
+                    # for _ in new_matrix:
+                    #     print(_)
                     for _ in range(N):
                         nrx, nry = rx+dx[0], ry+dy[0]
                         if new_matrix[nrx][nry] == '.':
@@ -474,7 +482,7 @@ def play_game(move_list):
 
 make_dir_list(0, [])
 # print(MOVE_LIST)
-# MOVE_LIST = [('LEFT', 'DOWN', 'LEFT', 'DOWN')]
+# MOVE_LIST = [('UP', 'DOWN')]
 for move_list in MOVE_LIST:
     play_game(move_list)
 
