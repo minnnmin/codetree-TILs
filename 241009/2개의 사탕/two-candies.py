@@ -24,7 +24,7 @@ ANSWER = 1e9
 def make_dir_list(n, history):
     global MOVE_LIST
 
-    if n == 10:
+    if n == 11:
         MOVE_LIST.append(history)
         return
     
@@ -463,6 +463,7 @@ def play_game(move_list):
 
 
 make_dir_list(0, [])
+# print(MOVE_LIST)
 
 for move_list in MOVE_LIST:
     play_game(move_list)
