@@ -136,7 +136,7 @@ for turn in range(1, K+1):
         for i in range(8):
             mmx, mmy = mx+dx[i], my+dy[i]
             mmx, mmy = fix_pos(mmx, mmy)
-            if not BROKEN[mmx][mmy]:
+            if not BROKEN[mmx][mmy] and (mmx, mmy) != (x, y):
                 MATRIX[mmx][mmy] -= power//2
                 if MATRIX[mmx][mmy] <= 0:
                     BROKEN[mmx][mmy] = 1
