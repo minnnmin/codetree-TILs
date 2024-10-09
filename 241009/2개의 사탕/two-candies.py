@@ -467,14 +467,14 @@ def play_game(move_list):
                     #     print(_)
                     return
 
-    print('아무도 탈출 못함')      
-    for _ in new_matrix:
-        print(_)
+    # print('아무도 탈출 못함')      
+    # for _ in new_matrix:
+    #     print(_)
 
 
-# make_dir_list(0, [])
+make_dir_list(0, [])
 # print(MOVE_LIST)
-MOVE_LIST = [('LEFT', 'DOWN', 'LEFT', 'DOWN')]
+# MOVE_LIST = [('LEFT', 'DOWN', 'LEFT', 'DOWN')]
 for move_list in MOVE_LIST:
     play_game(move_list)
 
