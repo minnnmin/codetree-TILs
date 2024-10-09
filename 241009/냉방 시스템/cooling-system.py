@@ -33,7 +33,7 @@ def wind_right(air_x, air_y):
     global WIND
     air_d = 0
     fx, fy = air_x+dx[air_d], air_y+dy[air_d]
-    WIND[fx][fy] = 5
+    WIND[fx][fy] += 5
 
     visited = [[False for _ in range(N)] for _ in range(N)]
     visited[fx][fy] = True
@@ -65,7 +65,7 @@ def wind_left(air_x, air_y):
     global WIND
     air_d = 2
     fx, fy = air_x+dx[air_d], air_y+dy[air_d]
-    WIND[fx][fy] = 5
+    WIND[fx][fy] += 5
 
     visited = [[False for _ in range(N)] for _ in range(N)]
     visited[fx][fy] = True
@@ -97,7 +97,7 @@ def wind_up(air_x, air_y):
     global WIND
     air_d = 3
     fx, fy = air_x+dx[air_d], air_y+dy[air_d]
-    WIND[fx][fy] = 5
+    WIND[fx][fy] += 5
 
     visited = [[False for _ in range(N)] for _ in range(N)]
     visited[fx][fy] = True
@@ -129,7 +129,7 @@ def wind_down(air_x, air_y):
     global WIND
     air_d = 1
     fx, fy = air_x+dx[air_d], air_y+dy[air_d]
-    WIND[fx][fy] = 5
+    WIND[fx][fy] += 5
 
     visited = [[False for _ in range(N)] for _ in range(N)]
     visited[fx][fy] = True
@@ -239,11 +239,11 @@ for minutes in range(1, 101):
         if WIND[x][y] < K:
             ALL_COOL = False
             break
-    if ALL_COOL:
-        break
 
     # for _ in WIND:
-    #     print(_)
+        # print(_)
 
+    if ALL_COOL:
+        break
 
 print(minutes)
