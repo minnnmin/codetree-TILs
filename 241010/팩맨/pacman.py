@@ -95,12 +95,11 @@ for turn in range(T):
     get_monster, history = packman_move()
     px, py = PACKMAN_POS
     # 해당 루트 돌면서 만나는 몬스터를 시체로 만들 것
-    if get_monster > 0:
-        for d in history:
-            px, py = px+dx[d], py+dy[d]
-            if sum(MONSTER[px][py]) > 0:
-                DEAD[px][py].append(turn+2)
-                MONSTER[px][py] = [0, 0, 0, 0, 0, 0, 0, 0]
+    for d in history:
+        px, py = px+dx[d], py+dy[d]
+        if sum(MONSTER[px][py]) > 0:
+            DEAD[px][py].append(turn+2)
+            MONSTER[px][py] = [0, 0, 0, 0, 0, 0, 0, 0]
     PACKMAN_POS = (px, py)
 
     ''' 4. 몬스터 시체 소멸 '''
