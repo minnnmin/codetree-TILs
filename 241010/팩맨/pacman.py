@@ -56,8 +56,7 @@ def packman_move():
                         get_monster = monster
                         history = [d1, d2, d3]
     
-    return get_monster, history                    
-
+    return get_monster, history
 
 
 for turn in range(T):
@@ -79,15 +78,16 @@ for turn in range(T):
                 if member_cnt == 0:
                     continue
                 CANT_MOVE = True
+                od = d
                 for _ in range(8): # 가능할 때까지 방향 바꿔보기
                     nx, ny = x+dx[d], y+dy[d]
-                    if in_range(nx, ny) and sum(DEAD[nx][ny]) == 0 and (nx, ny) != PACKMAN_POS:
+                    if in_range(nx, ny) and DEAD[nx][ny] == [] and (nx, ny) != PACKMAN_POS:
                         new_monster[nx][ny][d] += member_cnt # 멤버 수만큼 갱신
                         CANT_MOVE = False
                         break
                     d = (d+1)%8
                 if CANT_MOVE:
-                    new_monster[x][y][d] = member_cnt
+                    new_monster[x][y][od] += member_cnt
     # 모든 몬스터 이동 후 new_monster -> MONTSER에 덮어쓰기
     MONSTER = new_monster
 
