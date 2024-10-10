@@ -41,15 +41,16 @@ def packman_move():
                 history_pos = []
                 for d in [d1, d2, d3]:
                     px, py = px+dx[d], py+dy[d]
-                    if (px, py) in history_pos: # 재방문 방지
-                        break
                     if not in_range(px, py):
                         CAN_GO = False
                         break
+                    if (px, py) in history_pos: # 재방문할 경우 몬스터 수 안 더함
+                        history_pos.append((px, py))
+                        continue
                     if sum(MONSTER[px][py]) > 0:
                         # 그 자리 몬스터가 있다면
                         monster += sum(MONSTER[px][py])
-                    history_pos.append((px, py))
+                        history_pos.append((px, py))
                 if CAN_GO:
                     if monster > get_monster or (monster == get_monster and [d1, d2, d3] < history):
                         get_monster = monster
@@ -65,7 +66,9 @@ for turn in range(T):
         for j in range(4):
             for d in range(8):
                 if MONSTER[i][j][d] > 0:
-                    EGG[i][j].append(d)
+                    cnt = MONSTER[i][j][d]
+                    for _ in range(cnt):
+                        EGG[i][j].append(d)
 
     ''' 2. 몬스터 이동 '''
     new_monster = [[[0, 0, 0, 0, 0, 0, 0, 0] for _ in range(4)] for _ in range(4)]
@@ -75,14 +78,19 @@ for turn in range(T):
                 member_cnt = MONSTER[x][y][d]
                 if member_cnt == 0:
                     continue
-                for _ in range(7): # 가능할 때까지 방향 바꿔보기
+                CANT_MOVE = True
+                for _ in range(8): # 가능할 때까지 방향 바꿔보기
                     nx, ny = x+dx[d], y+dy[d]
                     if in_range(nx, ny) and sum(DEAD[nx][ny]) == 0 and (nx, ny) != PACKMAN_POS:
                         new_monster[nx][ny][d] += member_cnt # 멤버 수만큼 갱신
+                        CANT_MOVE = False
                         break
                     d = (d+1)%8
+                if CANT_MOVE:
+                    new_monster[x][y][d] = member_cnt
     # 모든 몬스터 이동 후 new_monster -> MONTSER에 덮어쓰기
     MONSTER = new_monster
+
     ''' 3. 팩맨 이동 '''
     get_monster, history = packman_move()
     px, py = PACKMAN_POS
@@ -94,6 +102,7 @@ for turn in range(T):
                 DEAD[px][py].append(turn+2)
                 MONSTER[px][py] = [0, 0, 0, 0, 0, 0, 0, 0]
     PACKMAN_POS = (px, py)
+
     ''' 4. 몬스터 시체 소멸 '''
     for i in range(4):
         for j in range(4):
@@ -110,8 +119,6 @@ for turn in range(T):
                 MONSTER[i][j][d] += 1
             EGG[i][j] = []
 
-    # for _ in MONSTER:
-    #     print(_)
 survive = 0
 for i in range(4):
     for j in range(4):
