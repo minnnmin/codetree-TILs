@@ -77,6 +77,9 @@ def col_sort():
 
 FIND = False
 for sec in range(1, 101):
+    if MATRIX[R][C] == K:
+        FIND = True
+        break
     ''' 행이 크면 행, 열이 크면 열을 정렬 '''
     if ROW_CNT >= COL_CNT:
         row_sort()
@@ -90,17 +93,7 @@ for sec in range(1, 101):
     if MATRIX[R][C] == K:
         FIND = True
         break
-    # print('matrix')
-    # for r in range(10):
-    #     for c in range(10):
-    #         print(MATRIX[r][c], end=' ')
-    #     print()
-    # for _ in MATRIX:
-    #     print(_)
-    # print('r', ROW_CNT)
-    # print('c', COL_CNT)
-# for _ in MATRIX:
-#     print(_)
+
 if FIND:
     print(sec)
 else:
