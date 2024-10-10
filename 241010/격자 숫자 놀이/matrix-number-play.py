@@ -75,26 +75,25 @@ def col_sort():
             MATRIX[row][col] = 0
 
 
-FIND = False
-for sec in range(1, 101):
-    if MATRIX[R][C] == K:
-        FIND = True
-        break
-    ''' 행이 크면 행, 열이 크면 열을 정렬 '''
-    if ROW_CNT >= COL_CNT:
-        row_sort()
-    else:
-        col_sort()
-        # for r in range(10):
-        #     for c in range(10):
-        #         print(MATRIX[r][c], end=' ')
-        #     print()
-    ''' 만약 MATRIX[R][C] == K 면 break '''
-    if MATRIX[R][C] == K:
-        FIND = True
-        break
-
-if FIND:
-    print(sec)
+if MATRIX[R][C] == K:
+    print(0)
 else:
-    print(-1)
+    FIND = False
+    for sec in range(1, 101):
+        ''' 행이 크면 행, 열이 크면 열을 정렬 '''
+        if ROW_CNT >= COL_CNT:
+            row_sort()
+        else:
+            col_sort()
+            # for r in range(10):
+            #     for c in range(10):
+            #         print(MATRIX[r][c], end=' ')
+            #     print()
+        ''' 만약 MATRIX[R][C] == K 면 break '''
+        if MATRIX[R][C] == K:
+            FIND = True
+            break
+    if FIND:
+        print(sec)
+    else:
+        print(-1)
