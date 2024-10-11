@@ -61,7 +61,15 @@ for sec in range(1, K+1):
     PLAYER = new_player
     
     ''' 모든 참가자가 미로 탈출한 경우 break '''
-    if FINISH == M:
+    # if FINISH == M:
+    #     break
+    all_finished = True
+    for i in range(N):
+        for j in range(N):
+            if PLAYER[i][j] > 0:
+                all_finished = False
+                break
+    if all_finished:
         break
 
     ''' 2. 미로 회전 '''
@@ -102,29 +110,6 @@ for sec in range(1, K+1):
     new_player = [[0 for _ in range(N)] for _ in range(N)]
 
     # 사람, 벽 따로 이동. 출구는 WALL에 포함시키자.           
-    # rotate_cnt = (f_size+2) // 2
-    # for turn in range(rotate_cnt):
-    #     # 위->오
-    #     lx, ly = X+(1)*turn, Y+(1)*turn
-    #     rx, ry = X+(1)*turn, Y+f_size-(1)*turn
-    #     if (lx, ly) == (rx, ry):
-    #         new_wall[lx][ly] = WALL[lx][ly]
-    #         break
-    #     for x, y in zip(range(X+f_size-turn, X-1+turn, -1), range(Y+f_size-turn, Y-1+turn, -1)):
-    #         new_wall[x][Y+f_size] = WALL[X][y]
-    #         new_player[x][Y+f_size] = PLAYER[X][y]
-    #     # 왼->위
-    #     for y, x in zip(range(Y+f_size-turn, Y-1+turn, -1), range(X, X+f_size+1)):
-    #         new_wall[X][y] = WALL[x][Y]
-    #         new_player[X][y] = PLAYER[x][Y]
-    #     # 아래->왼
-    #     for x, y in zip(range(X, X+f_size+1), range(Y, Y+f_size+1)):
-    #         new_wall[x][Y] = WALL[X+f_size][y]
-    #         new_player[x][Y] = PLAYER[X+f_size][y]
-    #     # 오->아래
-    #     for y, x in zip(range(Y, Y+f_size+1), range(X+f_size-turn, X-1+turn, -1)):
-    #         new_wall[X+f_size][y] = WALL[x][Y+f_size]
-    #         new_player[X+f_size][y] = PLAYER[x][Y+f_size]
     f_size += 1
     for i in range(f_size):
         for j in range(f_size):
@@ -145,3 +130,15 @@ for sec in range(1, K+1):
 
 print(ANSWER)
 print(EXIT[0]+1, EXIT[1]+1)
+
+''' 이거 해바
+4 3 8
+0 0 0 0
+9 2 2 0
+0 1 0 1
+0 0 0 1
+1 1
+1 4
+4 1
+4 3
+3 3'''
