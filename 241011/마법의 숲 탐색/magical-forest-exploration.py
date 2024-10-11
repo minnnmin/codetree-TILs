@@ -76,17 +76,45 @@ def move(gid):
     while 1:
         x, y, d = GOLLUM[gid]
         if can_move_south(gid):
-            # print('남', end=' ')
             GOLLUM[gid] = (x+1, y, d)
         elif can_move_west(gid):
-            # print('서', end=' ')
             GOLLUM[gid] = (x, y-1, (d+3)%4)
         elif can_move_east(gid):
-            # print('동', end=' ')
             GOLLUM[gid] = (x, y+1, (d+1)%4)
         else:
-            # print('이동 끝')
             break
+
+# 최대 행 합
+ANSWER = 0
+
+from collections import deque
+
+q = deque()
+
+# 정령 이동 - bfs
+def move2(gid):
+    global GOLLUM_MATRIX, ANSWER, MAX_ROW
+    x, y, d = GOLLUM[gid]
+    MAX_ROW[gid] = x+1-2
+    tx, ty = x+dx[d], y+dy[d] # 출구를 넣고 돌려
+    visited = [[False for _ in range(C)] for _ in range(R)]
+    visited[tx][ty] = True
+    q.append((tx, ty, gid))
+
+
+    while q:
+        x, y, g = q.popleft()
+        MAX_ROW[gid] = MAX_ROW[g] if MAX_ROW[g] > MAX_ROW[gid] else MAX_ROW[gid]
+
+        tx, ty, td = GOLLUM[g]
+        if (x, y) == (tx+dx[td], ty+dy[td]):
+            # 출구 이므로! 다른 애들 추가 가능
+            for i in range(4):
+                nx, ny = x+dx[i], y+dy[i]
+                if in_range(nx, ny) and GOLLUM_MATRIX[nx][ny] > 0 and not visited[nx][ny]:
+                    q.append((nx, ny, GOLLUM_MATRIX[nx][ny]))
+                    visited[nx][ny] = True
+    ANSWER += MAX_ROW[gid]
 
 
 # i번 골룸의 최대 행. 유니온 파인드st - 0번째 안씀
@@ -94,16 +122,15 @@ MAX_ROW = [0 for _ in range(K+1)]
 # i번 골룸이랑 이어진 애. 본인 최대행보다 커야만 부모가 된다. 유니온 파인드st - 0번째 안씀
 PARENTS = [i for i in range(K+1)]
 
+
 # 정령번호 = 골룸번호 = gid로 치자 일단
 for gid in range(1, K+1):
-    # print('========= gid:', gid, '=========')
     ''' 1. 골룸 이동 '''
     move(gid)
  
     # 만약 골룸이 이동 했는데도 중심 행이 4 미만이면 그것도 맵 터짐
     x, y, d = GOLLUM[gid]
     if x < 4:
-        # print('못 들어감')
         GOLLUM_MATRIX = [[0 for _ in range(C)] for _ in range(R)]
         continue
     else:
@@ -113,38 +140,6 @@ for gid in range(1, K+1):
             GOLLUM_MATRIX[nx][ny] = gid
 
     ''' 2. 정령 이동 후 전역변수 갱신 '''
-    # gid번 정령의 이동
-    x, y, d = GOLLUM[gid]
-    MAX_ROW[gid] = x+1 # 본인 골룸 내 최대 행
-    exit_x, exit_y = x+dx[d], y+dy[d]
-    for i in range(4):
-        nx, ny = exit_x+dx[i], exit_y+dy[i]
-        if in_range(nx, ny) and GOLLUM_MATRIX[nx][ny] != gid: # 다른 골룸과 연결
-            new_gid = GOLLUM_MATRIX[nx][ny]
-            if MAX_ROW[PARENTS[gid]] < MAX_ROW[PARENTS[new_gid]]:
-                PARENTS[gid] = PARENTS[new_gid]
-
-    # exit_x, exit_y 상하좌우에 나랑 다른 번호 골룸 있으면 그 골룸이 내 부모가 됨
-    # 저기모야. 맵 초과되어서 삭제될때 유니온 파인드도 초기화할것! - 이건 하지마. 마지막에 구해야 하니까.
-    # 골룸 스테이트만 초기화.
-    # print('부모 골룸', PARENTS)
-    # print('최대 행', MAX_ROW)
-    # print('골룸 매트릭스')
-    # for _ in GOLLUM_MATRIX:
-    #     print(_)
-    # print('골룸 위치')
-    # print(GOLLUM[gid])
-    # if gid == 2:
-    #     break
-
-
-# 최종 출력 전, MAX_ROW를 3씩 뺄 것
-for i in range(1, K+1):
-    if MAX_ROW[i] != 0:
-        MAX_ROW[i] -= 2
-ANSWER = 0
-# print(PARENTS)
-# print(MAX_ROW)
-for gid in range(1, K+1):
-    ANSWER += MAX_ROW[PARENTS[gid]]
+    move2(gid)
+ 
 print(ANSWER)
