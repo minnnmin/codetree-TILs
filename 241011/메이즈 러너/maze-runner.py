@@ -59,7 +59,12 @@ for sec in range(1, K+1):
                 ANSWER += 1*num
 
     PLAYER = new_player
-    
+    # for _ in PLAYER:
+    #     print(_)
+    # print()
+    # for _ in WALL:
+    #     print(_)
+    # print()
     ''' 모든 참가자가 미로 탈출한 경우 break '''
     # if FINISH == M:
     #     break
@@ -75,8 +80,8 @@ for sec in range(1, K+1):
     ''' 2. 미로 회전 '''
     f_pos = (N, N) # 왼쪽 위 좌표
     f_size = N # 한 변의 길이 -1
-    for x in range(N-2):
-        for y in range(N-2):
+    for x in range(N-1):
+        for y in range(N-1):
             # (x, y)가 왼쪽 위
             for size in range(1, N):
                 # size는 (한 변의 길이 - 1)
@@ -84,6 +89,7 @@ for sec in range(1, K+1):
                     break
                 # 이제 사람1, 출구 포함하는지 확인
                 ex, ey = EXIT
+                # print(EXIT, 'EXIT')
                 if not (x <= ex <= x+size and y <= ey <= y+size):
                     continue
                 is_player = False
@@ -92,6 +98,8 @@ for sec in range(1, K+1):
                         if PLAYER[i][j] > 0:
                             is_player = True
                             break
+                    if is_player:
+                        break
                 if not is_player:
                     continue
                 # 정사각형 조건 통과
@@ -99,7 +107,7 @@ for sec in range(1, K+1):
                 if size < f_size or (size == f_size and x < f_pos[0]) or (size == f_size and x == f_pos[0] and y < f_pos[1]):
                     f_pos = (x, y)
                     f_size = size
-                    break
+                    # break
     # 정사각형이 선택되었음
     # 이제 회전할 차례
     if f_size == N:
@@ -126,7 +134,12 @@ for sec in range(1, K+1):
             if WALL[x][y] == -1:
                 EXIT = (x, y)
             PLAYER[x][y] = new_player[x][y]
-
+    # for _ in PLAYER:
+    #     print(_)
+    # print()
+    # for _ in WALL:
+    #     print(_)
+    # print()
 
 print(ANSWER)
 print(EXIT[0]+1, EXIT[1]+1)
